@@ -1,0 +1,82 @@
+12/11/2021 10:41 An exception occurred while initializing the database. See the InnerException for details. =>    en System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   en System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   en System.Data.Entity.Internal.LazyInternalContext.<>c.<InitializeDatabase>b__58_0(InternalContext c)
+   en System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   en System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   en System.Data.Entity.Internal.LazyInternalContext.InitializeDatabase()
+   en System.Data.Entity.Internal.InternalContext.Initialize()
+   en System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   en System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   en System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   en System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   en System.Linq.Queryable.Where[TSource](IQueryable`1 source, Expression`1 predicate)
+   en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 106
+------------------------------------------
+23/12/2021 09:36 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 96
+------------------------------------------
+14/10/2022 08:59 The underlying provider failed on Open. =>    en System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+   en System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)
+   en System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__0()
+   en System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0()
+   en System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   en System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<>c__14`1.<GetElementFunction>b__14_1(IEnumerable`1 sequence)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   en System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 72
+------------------------------------------
+11/12/2022 12:53 Se debe indicar el número de compañía a la que perteneces =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 69
+------------------------------------------
+12/10/2023 22:33 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+12/10/2023 22:33 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+12/10/2023 22:35 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+12/10/2023 22:35 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+12/10/2023 22:35 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+12/10/2023 22:35 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+12/10/2023 22:35 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+12/10/2023 22:35 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+12/10/2023 22:36 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+12/10/2023 22:36 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+15/02/2024 18:14 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\steve\Documents\Repositorios DYD\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 96
+------------------------------------------
+16/02/2024 14:12 Usuario no existe =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 77
+------------------------------------------
+03/09/2024 12:05 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+03/09/2024 12:05 An error occurred while executing the command definition. See the inner exception for details. =>    en System.Data.Entity.Core.EntityClient.Internal.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+   en System.Data.Entity.Core.Objects.Internal.ObjectQueryExecutionPlan.Execute[TResultType](ObjectContext context, ObjectParameterCollection parameterValues)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__1()
+   en System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__0()
+   en System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0()
+   en System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   en System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<>c__14`1.<GetElementFunction>b__14_1(IEnumerable`1 sequence)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   en System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 115
+------------------------------------------
+03/09/2024 12:05 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+03/09/2024 12:05 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+03/09/2024 12:05 Usuario no existe =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 114
+------------------------------------------

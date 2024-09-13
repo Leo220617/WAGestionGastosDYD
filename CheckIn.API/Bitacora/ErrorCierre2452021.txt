@@ -1,0 +1,6 @@
+24/05/2021 13:19 System.Exception: Este usuario no contiene una norma de reparto asignada
+   en CheckIn.API.Controllers.CierreController.Post(CierreViewModel gastos) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 290
+------------------------------------------
+24/05/2021 13:20 System.Exception: Este usuario no contiene una norma de reparto asignada
+   en CheckIn.API.Controllers.CierreController.Post(CierreViewModel gastos) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 290
+------------------------------------------

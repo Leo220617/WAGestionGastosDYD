@@ -1,0 +1,213 @@
+01/07/2021 10:51 System.NullReferenceException: Referencia a objeto no establecida como instancia de un objeto.
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1140
+------------------------------------------
+30/09/2021 10:56 System.Runtime.InteropServices.ExternalException (0x80004005): Error genérico en GDI+.
+   en System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   en System.Drawing.Image.Save(String filename, ImageFormat format)
+   en CheckIn.API.Controllers.ComprasController.GuardaImagenBase64(String ImagenBase64, String CarpetaImagen, String NomImagen, ImageFormat FormatoImagen) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 57
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1107
+------------------------------------------
+30/09/2021 11:02 System.Runtime.InteropServices.ExternalException (0x80004005): Error genérico en GDI+.
+   en System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   en System.Drawing.Image.Save(String filename, ImageFormat format)
+   en CheckIn.API.Controllers.ComprasController.GuardaImagenBase64(String ImagenBase64, String CarpetaImagen, String NomImagen, ImageFormat FormatoImagen) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 57
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1107
+------------------------------------------
+30/09/2021 11:02 System.Runtime.InteropServices.ExternalException (0x80004005): Error genérico en GDI+.
+   en System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   en System.Drawing.Image.Save(String filename, ImageFormat format)
+   en CheckIn.API.Controllers.ComprasController.GuardaImagenBase64(String ImagenBase64, String CarpetaImagen, String NomImagen, ImageFormat FormatoImagen) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 57
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1107
+------------------------------------------
+15/11/2021 13:47 System.Exception: Esta factura YA existe
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1182
+------------------------------------------
+18/11/2021 10:38 System.Exception: Esta factura YA existe
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1182
+------------------------------------------
+18/11/2021 10:40 System.Exception: Esta factura YA existe
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1182
+------------------------------------------
+18/11/2021 11:00 System.Exception: Esta factura YA existe
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1182
+------------------------------------------
+24/03/2022 15:18 System.Runtime.InteropServices.ExternalException (0x80004005): Error genérico en GDI+.
+   en System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   en System.Drawing.Image.Save(String filename, ImageFormat format)
+   en CheckIn.API.Controllers.ComprasController.GuardaImagenBase64(String ImagenBase64, String CarpetaImagen, String NomImagen, ImageFormat FormatoImagen) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 57
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1134
+------------------------------------------
+24/03/2022 15:18 System.Runtime.InteropServices.ExternalException (0x80004005): Error genérico en GDI+.
+   en System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   en System.Drawing.Image.Save(String filename, ImageFormat format)
+   en CheckIn.API.Controllers.ComprasController.GuardaImagenBase64(String ImagenBase64, String CarpetaImagen, String NomImagen, ImageFormat FormatoImagen) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 57
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1134
+------------------------------------------
+02/04/2022 10:07 System.Runtime.InteropServices.ExternalException (0x80004005): Error genérico en GDI+.
+   en System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   en System.Drawing.Image.Save(String filename, ImageFormat format)
+   en CheckIn.API.Controllers.ComprasController.GuardaImagenBase64(String ImagenBase64, String CarpetaImagen, String NomImagen, ImageFormat FormatoImagen) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 57
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1153
+------------------------------------------
+02/04/2022 10:07 System.Runtime.InteropServices.ExternalException (0x80004005): Error genérico en GDI+.
+   en System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   en System.Drawing.Image.Save(String filename, ImageFormat format)
+   en CheckIn.API.Controllers.ComprasController.GuardaImagenBase64(String ImagenBase64, String CarpetaImagen, String NomImagen, ImageFormat FormatoImagen) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 57
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1153
+------------------------------------------
+02/04/2022 10:33 System.Runtime.InteropServices.ExternalException (0x80004005): Error genérico en GDI+.
+   en System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   en System.Drawing.Image.Save(String filename, ImageFormat format)
+   en CheckIn.API.Controllers.ComprasController.GuardaImagenBase64(String ImagenBase64, String CarpetaImagen, String NomImagen, ImageFormat FormatoImagen) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 57
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1153
+------------------------------------------
+05/04/2022 10:04 System.Runtime.InteropServices.ExternalException (0x80004005): Error genérico en GDI+.
+   en System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   en System.Drawing.Image.Save(String filename, ImageFormat format)
+   en CheckIn.API.Controllers.ComprasController.GuardaImagenBase64(String ImagenBase64, String CarpetaImagen, String NomImagen, ImageFormat FormatoImagen) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 57
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1153
+------------------------------------------
+10/05/2022 11:24 System.Runtime.InteropServices.ExternalException (0x80004005): Error genérico en GDI+.
+   en System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   en System.Drawing.Image.Save(String filename, ImageFormat format)
+   en CheckIn.API.Controllers.ComprasController.GuardaImagenBase64(String ImagenBase64, String CarpetaImagen, String NomImagen, ImageFormat FormatoImagen) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 57
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1155
+------------------------------------------
+30/05/2022 11:54 System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   en System.Data.Entity.Internal.InternalContext.SaveChanges()
+   en System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   en System.Data.Entity.DbContext.SaveChanges()
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1173
+------------------------------------------
+30/05/2022 11:57 System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   en System.Data.Entity.Internal.InternalContext.SaveChanges()
+   en System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   en System.Data.Entity.DbContext.SaveChanges()
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1173
+------------------------------------------
+30/05/2022 12:02 System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   en System.Data.Entity.Internal.InternalContext.SaveChanges()
+   en System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   en System.Data.Entity.DbContext.SaveChanges()
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1216
+------------------------------------------
+30/05/2022 12:02 System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   en System.Data.Entity.Internal.InternalContext.SaveChanges()
+   en System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   en System.Data.Entity.DbContext.SaveChanges()
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1216
+------------------------------------------
+30/05/2022 12:07 System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   en System.Data.Entity.Internal.InternalContext.SaveChanges()
+   en System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   en System.Data.Entity.DbContext.SaveChanges()
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1216
+------------------------------------------
+01/06/2022 15:59 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+04/07/2022 22:43 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+04/07/2022 22:43 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+04/07/2022 22:44 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+04/07/2022 22:47 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+04/07/2022 22:50 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+04/07/2022 22:53 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+01/08/2022 23:06 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+01/08/2022 23:06 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+01/08/2022 23:07 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+01/08/2022 23:08 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+01/08/2022 23:09 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1399
+------------------------------------------
+01/08/2022 23:10 System.NullReferenceException: Referencia a objeto no establecida como instancia de un objeto.
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1189
+------------------------------------------
+01/08/2022 23:11 System.NullReferenceException: Referencia a objeto no establecida como instancia de un objeto.
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1189
+------------------------------------------
+01/08/2022 23:14 System.NullReferenceException: Referencia a objeto no establecida como instancia de un objeto.
+   en CheckIn.API.Controllers.ComprasController.<>c.<Post>b__8_2(DetCompras a)
+   en System.Linq.Enumerable.WhereArrayIterator`1.MoveNext()
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra)
+------------------------------------------
+01/08/2022 23:15 System.NullReferenceException: Referencia a objeto no establecida como instancia de un objeto.
+   en CheckIn.API.Controllers.ComprasController.<>c.<Post>b__8_2(DetCompras a)
+   en System.Linq.Enumerable.WhereArrayIterator`1.MoveNext()
+   en System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   en System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra)
+------------------------------------------
+01/08/2022 23:17 System.NullReferenceException: Referencia a objeto no establecida como instancia de un objeto.
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra)
+------------------------------------------
+11/12/2022 12:46 System.NullReferenceException: Referencia a objeto no establecida como instancia de un objeto.
+   en CheckIn.API.Controllers.ComprasController.PutActualizarFacturaManual(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1543
+------------------------------------------
+11/12/2022 12:47 System.NullReferenceException: Referencia a objeto no establecida como instancia de un objeto.
+   en CheckIn.API.Controllers.ComprasController.PutActualizarFacturaManual(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1543
+------------------------------------------
+22/12/2022 08:56 System.FormatException: La entrada no es una cadena Base 64 válida porque contiene un carácter que no es Base 64, más de dos caracteres de relleno o un carácter no válido entre los caracteres de relleno. 
+   en System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   en System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   en System.Convert.FromBase64String(String s)
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1169
+------------------------------------------
+22/12/2022 09:50 System.FormatException: La entrada no es una cadena Base 64 válida porque contiene un carácter que no es Base 64, más de dos caracteres de relleno o un carácter no válido entre los caracteres de relleno. 
+   en System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   en System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   en System.Convert.FromBase64String(String s)
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1169
+------------------------------------------
+22/12/2022 09:55 System.FormatException: La entrada no es una cadena Base 64 válida porque contiene un carácter que no es Base 64, más de dos caracteres de relleno o un carácter no válido entre los caracteres de relleno. 
+   en System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   en System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   en System.Convert.FromBase64String(String s)
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1169
+------------------------------------------
+05/01/2023 09:40 System.FormatException: La entrada no es una cadena Base 64 válida porque contiene un carácter que no es Base 64, más de dos caracteres de relleno o un carácter no válido entre los caracteres de relleno. 
+   en System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   en System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   en System.Convert.FromBase64String(String s)
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1169
+------------------------------------------
+05/01/2023 10:02 System.FormatException: La entrada no es una cadena Base 64 válida porque contiene un carácter que no es Base 64, más de dos caracteres de relleno o un carácter no válido entre los caracteres de relleno. 
+   en System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   en System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   en System.Convert.FromBase64String(String s)
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1169
+------------------------------------------
+15/06/2023 14:03 System.FormatException: La entrada no es una cadena Base 64 válida porque contiene un carácter que no es Base 64, más de dos caracteres de relleno o un carácter no válido entre los caracteres de relleno. 
+   en System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   en System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   en System.Convert.FromBase64String(String s)
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1182
+------------------------------------------
+15/06/2023 14:08 System.Exception: Esta factura YA existe con el mismo numero de factura y proveedor; ademas de estar asignada por el usuario con id: 1
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1419
+------------------------------------------
+03/07/2023 10:32 System.FormatException: La entrada no es una cadena Base 64 válida porque contiene un carácter que no es Base 64, más de dos caracteres de relleno o un carácter no válido entre los caracteres de relleno. 
+   en System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   en System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   en System.Convert.FromBase64String(String s)
+   en CheckIn.API.Controllers.ComprasController.Post(ComprasViewModel compra) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\ComprasController.cs:línea 1188
+------------------------------------------

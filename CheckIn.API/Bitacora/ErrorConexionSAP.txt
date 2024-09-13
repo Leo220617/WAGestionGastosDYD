@@ -1,0 +1,2 @@
+16/12/2021 09:00 No se pudo recuperar el generador de clases COM para el componente con CLSID {632F4591-AA62-4219-8FB6-22BCF5F60100} debido al siguiente error: 80040154 Clase no registrada (Excepción de HRESULT: 0x80040154 (REGDB_E_CLASSNOTREG)).
+------------------------------------------

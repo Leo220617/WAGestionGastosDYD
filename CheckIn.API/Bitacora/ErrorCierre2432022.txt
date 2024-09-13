@@ -1,0 +1,3 @@
+24/03/2022 15:26 System.Exception: Este usuario Leonardo Arce  no contiene una norma de reparto asignada
+   en CheckIn.API.Controllers.CierreController.Post(CierreViewModel gastos)
+------------------------------------------

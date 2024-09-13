@@ -1,0 +1,6 @@
+15/11/2021 14:00 System.Exception: Este usuario Leonardo Arce  no contiene una norma de reparto asignada
+   en CheckIn.API.Controllers.CierreController.Post(CierreViewModel gastos) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 435
+------------------------------------------
+15/11/2021 14:01 System.Exception: Este usuario Leonardo Arce  no contiene una norma de reparto asignada
+   en CheckIn.API.Controllers.CierreController.Post(CierreViewModel gastos) en C:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 435
+------------------------------------------

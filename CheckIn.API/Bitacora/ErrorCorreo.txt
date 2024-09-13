@@ -1,0 +1,155 @@
+27/05/2021 11:19 Referencia a objeto no establecida como instancia de un objeto. ->    en iTextSharp.text.html.simpleparser.HTMLWorker.CreateLineSeparator(IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLTagProcessors.HTMLTagProcessor_HR.StartElement(HTMLWorker worker, String tag, IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.StartElement(String tag, IDictionary`2 attrs)
+   en iTextSharp.text.xml.simpleparser.SimpleXMLParser.Go(TextReader reader)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.Parse(TextReader reader)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 187
+------------------------------------------
+27/05/2021 11:21 Referencia a objeto no establecida como instancia de un objeto. ->    en iTextSharp.text.html.simpleparser.HTMLWorker.CreateLineSeparator(IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLTagProcessors.HTMLTagProcessor_HR.StartElement(HTMLWorker worker, String tag, IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.StartElement(String tag, IDictionary`2 attrs)
+   en iTextSharp.text.xml.simpleparser.SimpleXMLParser.Go(TextReader reader)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.Parse(TextReader reader)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 187
+------------------------------------------
+27/05/2021 11:22 Referencia a objeto no establecida como instancia de un objeto. ->    en iTextSharp.text.html.simpleparser.HTMLWorker.CreateLineSeparator(IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLTagProcessors.HTMLTagProcessor_HR.StartElement(HTMLWorker worker, String tag, IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.StartElement(String tag, IDictionary`2 attrs)
+   en iTextSharp.text.xml.simpleparser.SimpleXMLParser.Go(TextReader reader)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.Parse(TextReader reader)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 187
+------------------------------------------
+27/05/2021 11:23 Referencia a objeto no establecida como instancia de un objeto. ->    en iTextSharp.text.html.simpleparser.HTMLWorker.CreateLineSeparator(IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLTagProcessors.HTMLTagProcessor_HR.StartElement(HTMLWorker worker, String tag, IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.StartElement(String tag, IDictionary`2 attrs)
+   en iTextSharp.text.xml.simpleparser.SimpleXMLParser.Go(TextReader reader)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.Parse(TextReader reader)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 187
+------------------------------------------
+27/05/2021 11:27 La longitud de la cadena no puede ser cero.
+Nombre del parámetro: oldValue ->    en System.String.ReplaceInternal(String oldValue, String newValue)
+   en System.String.Replace(String oldValue, String newValue)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 180
+------------------------------------------
+27/05/2021 11:27 La longitud de la cadena no puede ser cero.
+Nombre del parámetro: oldValue ->    en System.String.ReplaceInternal(String oldValue, String newValue)
+   en System.String.Replace(String oldValue, String newValue)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 180
+------------------------------------------
+27/05/2021 11:29 The document has no pages. ->    en iTextSharp.text.pdf.PdfPages.WritePageTree()
+   en iTextSharp.text.pdf.PdfWriter.Close()
+   en iTextSharp.text.pdf.PdfDocument.Close()
+   en iTextSharp.text.Document.Close()
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item)
+------------------------------------------
+27/05/2021 11:34 Referencia a objeto no establecida como instancia de un objeto. ->    en iTextSharp.text.html.simpleparser.HTMLWorker.CreateLineSeparator(IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLTagProcessors.HTMLTagProcessor_HR.StartElement(HTMLWorker worker, String tag, IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.StartElement(String tag, IDictionary`2 attrs)
+   en iTextSharp.text.xml.simpleparser.SimpleXMLParser.Go(TextReader reader)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.Parse(TextReader reader)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item)
+------------------------------------------
+27/05/2021 11:36 Referencia a objeto no establecida como instancia de un objeto. ->    en iTextSharp.text.html.simpleparser.HTMLWorker.CreateLineSeparator(IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLTagProcessors.HTMLTagProcessor_HR.StartElement(HTMLWorker worker, String tag, IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.StartElement(String tag, IDictionary`2 attrs)
+   en iTextSharp.text.xml.simpleparser.SimpleXMLParser.Go(TextReader reader)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.Parse(TextReader reader)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item)
+------------------------------------------
+27/05/2021 11:50 Se produjo una excepción en el inicializador de tipo de 'TheArtOfDev.HtmlRenderer.PdfSharp.Adapters.PdfSharpAdapter'. ->    en TheArtOfDev.HtmlRenderer.PdfSharp.Adapters.PdfSharpAdapter.get_Instance() en d:\source\github\HTML-Renderer\Source\HtmlRenderer.PdfSharp\Adapters\PdfSharpAdapter.cs:línea 57
+   en TheArtOfDev.HtmlRenderer.PdfSharp.HtmlContainer..ctor() en d:\source\github\HTML-Renderer\Source\HtmlRenderer.PdfSharp\HtmlContainer.cs:línea 43
+   en TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(String html, PdfGenerateConfig config, CssData cssData, EventHandler`1 stylesheetLoad, EventHandler`1 imageLoad) en d:\source\github\HTML-Renderer\Source\HtmlRenderer.PdfSharp\PdfGenerator.cs:línea 110
+   en TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(String html, PageSize pageSize, Int32 margin, CssData cssData, EventHandler`1 stylesheetLoad, EventHandler`1 imageLoad) en d:\source\github\HTML-Renderer\Source\HtmlRenderer.PdfSharp\PdfGenerator.cs:línea 76
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 183
+------------------------------------------
+27/05/2021 11:56 Se produjo una excepción en el inicializador de tipo de 'TheArtOfDev.HtmlRenderer.PdfSharp.Adapters.PdfSharpAdapter'. ->    en TheArtOfDev.HtmlRenderer.PdfSharp.Adapters.PdfSharpAdapter.get_Instance() en d:\source\github\HTML-Renderer\Source\HtmlRenderer.PdfSharp\Adapters\PdfSharpAdapter.cs:línea 57
+   en TheArtOfDev.HtmlRenderer.PdfSharp.HtmlContainer..ctor() en d:\source\github\HTML-Renderer\Source\HtmlRenderer.PdfSharp\HtmlContainer.cs:línea 43
+   en TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(String html, PdfGenerateConfig config, CssData cssData, EventHandler`1 stylesheetLoad, EventHandler`1 imageLoad) en d:\source\github\HTML-Renderer\Source\HtmlRenderer.PdfSharp\PdfGenerator.cs:línea 110
+   en TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(String html, PageSize pageSize, Int32 margin, CssData cssData, EventHandler`1 stylesheetLoad, EventHandler`1 imageLoad) en d:\source\github\HTML-Renderer\Source\HtmlRenderer.PdfSharp\PdfGenerator.cs:línea 76
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 183
+------------------------------------------
+27/05/2021 12:08 Cannot save a PDF document with no pages. ->    en PdfSharp.Pdf.PdfDocument.DoSave(PdfWriter writer)
+   en PdfSharp.Pdf.PdfDocument.Save(Stream stream, Boolean closeStream)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item)
+------------------------------------------
+27/05/2021 12:08 Cannot save a PDF document with no pages. ->    en PdfSharp.Pdf.PdfDocument.DoSave(PdfWriter writer)
+   en PdfSharp.Pdf.PdfDocument.Save(Stream stream, Boolean closeStream)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item)
+------------------------------------------
+27/05/2021 12:09 Cannot save a PDF document with no pages. ->    en PdfSharp.Pdf.PdfDocument.DoSave(PdfWriter writer)
+   en PdfSharp.Pdf.PdfDocument.Save(Stream stream, Boolean closeStream)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item)
+------------------------------------------
+27/05/2021 12:35 Cannot save a PDF document with no pages. ->    en PdfSharp.Pdf.PdfDocument.DoSave(PdfWriter writer)
+   en PdfSharp.Pdf.PdfDocument.Save(Stream stream, Boolean closeStream)
+   en PdfSharp.Pdf.PdfDocument.Save(Stream stream)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 184
+------------------------------------------
+27/05/2021 12:40 Cannot save a PDF document with no pages. ->    en PdfSharp.Pdf.PdfDocument.DoSave(PdfWriter writer)
+   en PdfSharp.Pdf.PdfDocument.Save(Stream stream, Boolean closeStream)
+   en PdfSharp.Pdf.PdfDocument.Save(Stream stream)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 184
+------------------------------------------
+27/05/2021 12:42 No se puede obtener acceso a una secuencia cerrada. ->    en System.IO.__Error.StreamIsClosed()
+   en System.IO.MemoryStream.Write(Byte[] buffer, Int32 offset, Int32 count)
+   en iTextSharp.text.pdf.OutputStreamCounter.Write(Byte[] buffer, Int32 offset, Int32 count)
+   en iTextSharp.text.pdf.PdfIndirectObject.WriteTo(Stream os)
+   en iTextSharp.text.pdf.PdfWriter.PdfBody.Write(PdfIndirectObject indirect, Int32 refNumber, Int32 generation)
+   en iTextSharp.text.pdf.PdfWriter.PdfBody.Add(PdfObject objecta, Int32 refNumber, Int32 generation, Boolean inObjStm)
+   en iTextSharp.text.pdf.PdfWriter.AddToBody(PdfObject objecta, PdfIndirectReference refa)
+   en iTextSharp.text.pdf.Type1Font.WriteFont(PdfWriter writer, PdfIndirectReference piref, Object[] parms)
+   en iTextSharp.text.pdf.FontDetails.WriteFont(PdfWriter writer)
+   en iTextSharp.text.pdf.PdfWriter.AddSharedObjectsToBody()
+   en iTextSharp.text.pdf.PdfWriter.Close()
+   en iTextSharp.text.DocWriter.Dispose()
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 208
+------------------------------------------
+27/05/2021 12:43 No se puede obtener acceso a una secuencia cerrada. ->    en System.IO.__Error.StreamIsClosed()
+   en System.IO.MemoryStream.Write(Byte[] buffer, Int32 offset, Int32 count)
+   en iTextSharp.text.pdf.OutputStreamCounter.Write(Byte[] buffer, Int32 offset, Int32 count)
+   en iTextSharp.text.pdf.PdfIndirectObject.WriteTo(Stream os)
+   en iTextSharp.text.pdf.PdfWriter.PdfBody.Write(PdfIndirectObject indirect, Int32 refNumber, Int32 generation)
+   en iTextSharp.text.pdf.PdfWriter.PdfBody.Add(PdfObject objecta, Int32 refNumber, Int32 generation, Boolean inObjStm)
+   en iTextSharp.text.pdf.PdfWriter.AddToBody(PdfObject objecta, PdfIndirectReference refa)
+   en iTextSharp.text.pdf.Type1Font.WriteFont(PdfWriter writer, PdfIndirectReference piref, Object[] parms)
+   en iTextSharp.text.pdf.FontDetails.WriteFont(PdfWriter writer)
+   en iTextSharp.text.pdf.PdfWriter.AddSharedObjectsToBody()
+   en iTextSharp.text.pdf.PdfWriter.Close()
+   en iTextSharp.text.DocWriter.Dispose()
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 208
+------------------------------------------
+27/05/2021 12:44 No se puede obtener acceso a una secuencia cerrada. ->    en System.IO.__Error.StreamIsClosed()
+   en System.IO.MemoryStream.Write(Byte[] buffer, Int32 offset, Int32 count)
+   en iTextSharp.text.pdf.OutputStreamCounter.Write(Byte[] buffer, Int32 offset, Int32 count)
+   en iTextSharp.text.pdf.PdfIndirectObject.WriteTo(Stream os)
+   en iTextSharp.text.pdf.PdfWriter.PdfBody.Write(PdfIndirectObject indirect, Int32 refNumber, Int32 generation)
+   en iTextSharp.text.pdf.PdfWriter.PdfBody.Add(PdfObject objecta, Int32 refNumber, Int32 generation, Boolean inObjStm)
+   en iTextSharp.text.pdf.PdfWriter.AddToBody(PdfObject objecta, PdfIndirectReference refa)
+   en iTextSharp.text.pdf.Type1Font.WriteFont(PdfWriter writer, PdfIndirectReference piref, Object[] parms)
+   en iTextSharp.text.pdf.FontDetails.WriteFont(PdfWriter writer)
+   en iTextSharp.text.pdf.PdfWriter.AddSharedObjectsToBody()
+   en iTextSharp.text.pdf.PdfWriter.Close()
+   en iTextSharp.text.DocWriter.Dispose()
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 208
+------------------------------------------
+27/05/2021 13:25 El tipo 'iTextSharp.text.Document' del ensamblado 'itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca' no está marcado como serializable. ->    en System.Runtime.Serialization.FormatterServices.InternalGetSerializableMembers(RuntimeType type)
+   en System.Runtime.Serialization.FormatterServices.<>c__DisplayClass9_0.<GetSerializableMembers>b__0(MemberHolder _)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en System.Runtime.Serialization.FormatterServices.GetSerializableMembers(Type type, StreamingContext context)
+   en System.Runtime.Serialization.Formatters.Binary.WriteObjectInfo.InitMemberInfo()
+   en System.Runtime.Serialization.Formatters.Binary.WriteObjectInfo.InitSerialize(Object obj, ISurrogateSelector surrogateSelector, StreamingContext context, SerObjectInfoInit serObjectInfoInit, IFormatterConverter converter, ObjectWriter objectWriter, SerializationBinder binder)
+   en System.Runtime.Serialization.Formatters.Binary.WriteObjectInfo.Serialize(Object obj, ISurrogateSelector surrogateSelector, StreamingContext context, SerObjectInfoInit serObjectInfoInit, IFormatterConverter converter, ObjectWriter objectWriter, SerializationBinder binder)
+   en System.Runtime.Serialization.Formatters.Binary.ObjectWriter.Serialize(Object graph, Header[] inHeaders, __BinaryWriter serWriter, Boolean fCheck)
+   en System.Runtime.Serialization.Formatters.Binary.BinaryFormatter.Serialize(Stream serializationStream, Object graph, Header[] headers, Boolean fCheck)
+   en System.Runtime.Serialization.Formatters.Binary.BinaryFormatter.Serialize(Stream serializationStream, Object graph)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 189
+------------------------------------------
+27/05/2021 13:30 Referencia a objeto no establecida como instancia de un objeto. ->    en iTextSharp.text.html.simpleparser.HTMLWorker.CreateLineSeparator(IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLTagProcessors.HTMLTagProcessor_HR.StartElement(HTMLWorker worker, String tag, IDictionary`2 attrs)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.StartElement(String tag, IDictionary`2 attrs)
+   en iTextSharp.text.xml.simpleparser.SimpleXMLParser.Go(TextReader reader)
+   en iTextSharp.text.html.simpleparser.HTMLWorker.Parse(TextReader reader)
+   en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en D:\GIT\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 202
+------------------------------------------
+07/06/2023 18:00 No se ha podido enviar el correo con la liquidación ->    en CheckIn.API.Controllers.CierreController.GetEnviarCorreo(InfoLiquid item) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\CierreController.cs:línea 235
+------------------------------------------

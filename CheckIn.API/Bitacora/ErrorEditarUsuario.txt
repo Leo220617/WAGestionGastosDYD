@@ -1,0 +1,16 @@
+03/10/2023 16:14 La clave a cambiar no debe ser igual a la anterior =>    en CheckIn.API.Controllers.LoginController.Put(LoginViewModel usuario) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 331
+------------------------------------------
+03/10/2023 16:17 La clave a cambiar no debe ser igual a la anterior =>    en CheckIn.API.Controllers.LoginController.Put(LoginViewModel usuario) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 331
+------------------------------------------
+03/10/2023 16:24 La clave a cambiar no debe ser igual a la anterior =>    en CheckIn.API.Controllers.LoginController.Put(LoginViewModel usuario)
+------------------------------------------
+03/10/2023 16:24 La clave a cambiar no debe ser igual a la anterior =>    en CheckIn.API.Controllers.LoginController.Put(LoginViewModel usuario)
+------------------------------------------
+03/10/2023 16:25 La clave a cambiar no debe ser igual a la anterior =>    en CheckIn.API.Controllers.LoginController.Put(LoginViewModel usuario) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 331
+------------------------------------------
+03/10/2023 16:26 La clave a cambiar no debe ser igual a la anterior =>    en CheckIn.API.Controllers.LoginController.Put(LoginViewModel usuario) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 331
+------------------------------------------
+03/10/2023 16:35 La clave a cambiar no debe ser igual a la anterior =>    en CheckIn.API.Controllers.LoginController.Put(LoginViewModel usuario) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 331
+------------------------------------------
+12/10/2023 22:39 La clave a cambiar no debe ser igual a la anterior =>    en CheckIn.API.Controllers.LoginController.Put(LoginViewModel usuario) en C:\Users\larce\Documents\GitHub\GestionGastosWA\CheckIn.API\Controllers\LoginController.cs:línea 331
+------------------------------------------
