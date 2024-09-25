@@ -94,6 +94,7 @@ namespace CheckIn.API.Controllers
                 var param = db.Parametros.FirstOrDefault();
 
                 var contador = 0;
+                var Errores = "";
                 foreach (var item in enc)
                 {
 
@@ -125,7 +126,6 @@ namespace CheckIn.API.Controllers
                         }
                         else
                         {
-
                             TipoGasto = db.Gastos.Where(a => a.idTipoGasto == item.idTipoGasto).FirstOrDefault();
                         }
 
@@ -187,9 +187,8 @@ namespace CheckIn.API.Controllers
                         imp8 += item.Impuesto8;
                         imp13 += item.Impuesto13;
 
-
-
-                        oInvoice.Lines.LineTotal = Convert.ToDouble(item.TotalComprobante.Value - item.TotalImpuesto);
+                          
+                        oInvoice.Lines.LineTotal = Convert.ToDouble(item2.SubTotal.Value);
                         oInvoice.Lines.UserFields.Fields.Item("U_DYD_CodigoMH").Value = item2.CodCabys;
                         //if (TipoGasto.Nombre.ToUpper().Contains("Combustible".ToUpper()))
                         //{
@@ -205,6 +204,45 @@ namespace CheckIn.API.Controllers
 
                         i++;
 
+                    }
+
+                    if(item.TotalOtrosCargos > 0)
+                    {
+                        Gastos TipoGasto = new Gastos();
+                        
+                        TipoGasto = db.Gastos.Where(a => a.Nombre.ToUpper().Contains("Alimentacion".ToUpper())).FirstOrDefault();
+
+                       
+
+                        var Cuenta = db.CuentasContables.Where(a => a.idCuentaContable == TipoGasto.idCuentaContable).FirstOrDefault();
+                        var Norma = db.NormasReparto.Where(a => a.id == item.idNormaReparto).FirstOrDefault();
+                        var Dimension = db.Dimensiones.Where(a => a.id == Norma.idDimension).FirstOrDefault();
+
+                        oInvoice.Lines.SetCurrentLine(i);
+                        oInvoice.Lines.ItemDescription = "Otros Cargos"; //"3102751358 - D y D Consultores"; // Factura -> Cedula 
+                        oInvoice.Lines.AccountCode = Cuenta.CodSAP; //"6-01-02-05-000"; //Cuenta contable del gasto
+
+                        var taxCode = param.IMP0;
+
+                         
+
+                        oInvoice.Lines.TaxCode = taxCode; //param.IMPEX; 
+
+                        oInvoice.Lines.LineTotal = Convert.ToDouble(item.TotalOtrosCargos);
+                        oInvoice.Lines.UserFields.Fields.Item("U_DYD_CodigoMH").Value = "";
+                        //if (TipoGasto.Nombre.ToUpper().Contains("Combustible".ToUpper()))
+                        //{
+                        //    var DetalleFac = db.DetCompras.Where(a => a.NumFactura == item.NumFactura && a.ClaveHacienda == item.ClaveHacienda && a.ConsecutivoHacienda == item.ConsecutivoHacienda).FirstOrDefault();
+                        //    oInvoice.Lines.UserFields.Fields.Item("U_CantLitrosKw").Value = DetalleFac.Cantidad;
+                        //    oInvoice.Lines.UserFields.Fields.Item("U_Tipo").Value = (DetalleFac.NomPro.ToUpper().Contains("Diesel".ToUpper()) ? "Diesel" : QuitarTilde(DetalleFac.NomPro).ToUpper().Contains("Super".ToUpper()) ? "Gasolina Super" : QuitarTilde(DetalleFac.NomPro).ToUpper().Contains("Regular".ToUpper()) ? "Gasolina Regular" : "Diesel");
+                        //}
+
+                        //   oInvoice.Lines.UserFields.Fields.Item("U_NumFactura").Value = item.NumFactura.ToString();
+                        // oInvoice.Lines.UserFields.Fields.Item("U_FechaFactura").Value = item.FecFactura;
+
+                        oInvoice.Lines.Add();
+
+                        i++;
                     }
 
                     //if (imp1 > 0)
@@ -268,12 +306,14 @@ namespace CheckIn.API.Controllers
                     if (respuesta != 0)
                     {
                         BitacoraErrores be = new BitacoraErrores();
-                        be.Descripcion = Conexion.Company.GetLastErrorDescription();
+                        be.Descripcion = "Factura #" + item.NumFactura + " " + Conexion.Company.GetLastErrorDescription();
                         be.StackTrace = Conexion.Company.UserName;
                         be.Metodo = "Insercion de Asiento en la factura #" + item.id;
                         be.Fecha = DateTime.Now;
                         db.BitacoraErrores.Add(be);
+                        db.SaveChanges();
                         contador++;
+                        Errores = Errores + " ******* " + be.Descripcion;
                     }
 
 
@@ -309,7 +349,7 @@ namespace CheckIn.API.Controllers
                     DocEntry = 0,
                     Type = "oPurchaiseInvoice",
                     Status = 0,
-                    Message = Conexion.Company.GetLastErrorDescription(),
+                    Message = Errores, //Conexion.Company.GetLastErrorDescription(),
                     User = Conexion.Company.UserName
                 };
 

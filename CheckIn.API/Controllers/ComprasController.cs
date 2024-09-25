@@ -349,12 +349,13 @@ namespace CheckIn.API.Controllers
                         //Informacion del Proveedor o emisor de la factura
 
                         factura.CodProveedor = Pais == "E" ? G.ExtraerValorDeNodoXml(xml, "infoTributaria/ruc") : G.ExtraerValorDeNodoXml(xml, "Emisor/Identificacion/Numero");
-
+                        factura.CodProveedor = factura.CodProveedor.TrimEnd().TrimStart();
                         // si el nombre se pasa de 80 caracteres debemos cortarlo
                         factura.ConsecutivoHacienda = factura.ConsecutivoHacienda.TrimEnd();
                         if (db.EncCompras.Where(m => m.CodEmpresa == factura.CodEmpresa
                    && m.CodProveedor == factura.CodProveedor
-                   && m.ConsecutivoHacienda.Contains(factura.ConsecutivoHacienda)
+                   && m.NumFactura == factura.NumFactura
+                   //&& m.ConsecutivoHacienda.Contains(factura.ConsecutivoHacienda)
                    && m.TipoDocumento == factura.TipoDocumento).Count() > 0)
                         {
                             throw new Exception($"El documento ya existe [Clave={factura.ClaveHacienda}] [Consecutivo={factura.ConsecutivoHacienda}]");
@@ -1013,37 +1014,63 @@ namespace CheckIn.API.Controllers
                                 var D = "";
                                 var B = "";
 
-
                                 Conexion g = new Conexion();
                                 SqlConnection Cn = new SqlConnection(g.DevuelveCadena());
-                                SqlCommand Cmd = new SqlCommand("Select * from Cantones where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'", Cn);
-                                SqlDataAdapter Da = new SqlDataAdapter(Cmd);
-                                DataSet Ds = new DataSet();
-                                Cn.Open();
-                                Da.Fill(Ds, "Cantones1");
-                                C = Ds.Tables["Cantones1"].Rows[0]["NomCanton"].ToString();
 
-                                Cn.Close();
+                                try
+                                {
+                                  
+                                    SqlCommand Cmd = new SqlCommand("Select * from Cantones where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'", Cn);
+                                    SqlDataAdapter Da = new SqlDataAdapter(Cmd);
+                                    DataSet Ds = new DataSet();
+                                    Cn.Open();
+                                    Da.Fill(Ds, "Cantones1");
+                                    C = Ds.Tables["Cantones1"].Rows[0]["NomCanton"].ToString();
 
-                                SqlCommand CmdD = new SqlCommand("Select * from Distritos where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'" + " and CodDistrito = '" + Distrito + "'", Cn);
-                                SqlDataAdapter DaD = new SqlDataAdapter(CmdD);
-                                DataSet DsD = new DataSet();
-                                Cn.Open();
-                                DaD.Fill(DsD, "Distritos1");
-                                D = DsD.Tables["Distritos1"].Rows[0]["NomDistrito"].ToString();
+                                    Cn.Close();
 
-                                Cn.Close();
+                                }
+                                catch (Exception)
+                                {
+
+                                    
+                                }
+
+                                try
+                                {
+                                    SqlCommand CmdD = new SqlCommand("Select * from Distritos where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'" + " and CodDistrito = '" + Distrito + "'", Cn);
+                                    SqlDataAdapter DaD = new SqlDataAdapter(CmdD);
+                                    DataSet DsD = new DataSet();
+                                    Cn.Open();
+                                    DaD.Fill(DsD, "Distritos1");
+                                    D = DsD.Tables["Distritos1"].Rows[0]["NomDistrito"].ToString();
+
+                                    Cn.Close();
+                                }
+                                catch (Exception)
+                                {
+
+                                     
+                                }
 
 
-                                SqlCommand CmdB = new SqlCommand("Select * from Barrios where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'" + " and CodDistrito = '" + Distrito + "' and CodBarrio = '" + Barrio + "'", Cn);
-                                SqlDataAdapter DaB = new SqlDataAdapter(CmdB);
-                                DataSet DsB = new DataSet();
-                                Cn.Open();
-                                DaB.Fill(DsB, "Barrios1");
-                                B = DsB.Tables["Barrios1"].Rows[0]["NomBarrio"].ToString();
+                                try
+                                {
+                                    SqlCommand CmdB = new SqlCommand("Select * from Barrios where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'" + " and CodDistrito = '" + Distrito + "' and CodBarrio = '" + Barrio + "'", Cn);
+                                    SqlDataAdapter DaB = new SqlDataAdapter(CmdB);
+                                    DataSet DsB = new DataSet();
+                                    Cn.Open();
+                                    DaB.Fill(DsB, "Barrios1");
+                                    B = DsB.Tables["Barrios1"].Rows[0]["NomBarrio"].ToString();
 
-                                Cn.Close();
+                                    Cn.Close();
+                                }
+                                catch (Exception)
+                                {
 
+                                     
+                                }
+                                
 
                                 client.Addresses.Add();
                                 client.Addresses.SetCurrentLine(0);
