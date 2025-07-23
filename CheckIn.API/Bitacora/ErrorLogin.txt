@@ -80,3 +80,32 @@
 ------------------------------------------
 03/09/2024 12:05 Usuario no existe =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 114
 ------------------------------------------
+09/01/2025 09:13 Usuario no existe =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 114
+------------------------------------------
+09/01/2025 09:13 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+09/01/2025 09:13 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+13/01/2025 20:00 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+09/07/2025 16:09 Usuario no existe =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 114
+------------------------------------------
+09/07/2025 16:09 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+09/07/2025 16:09 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+22/07/2025 15:38 The 'GrupoCliente' property on 'Parametros' could not be set to a 'null' value. You must set this property to a non-null value of type 'System.Int32'.  =>    en System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   en System.Data.Entity.Core.Common.Internal.Materialization.Shaper.GetPropertyValueWithErrorHandling[TProperty](Int32 ordinal, String propertyName, String typeName)
+   en lambda_method(Closure , Shaper )
+   en System.Data.Entity.Core.Common.Internal.Materialization.Shaper.HandleEntityAppendOnly[TEntity](Func`2 constructEntityDelegate, EntityKey entityKey, EntitySet entitySet)
+   en lambda_method(Closure , Shaper )
+   en System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   en System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   en System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   en System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<>c__14`1.<GetElementFunction>b__14_1(IEnumerable`1 sequence)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   en System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 115
+------------------------------------------

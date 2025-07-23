@@ -42,6 +42,8 @@ namespace CheckIn.API.Models.ModelCliente
         public virtual DbSet<Proveedores> Proveedores { get; set; }
         public virtual DbSet<BitacoraLogin> BitacoraLogin { get; set; }
         public virtual DbSet<BitacoraCierres> BitacoraCierres { get; set; }
+        public virtual DbSet<ConexionServiceLayer> ConexionServiceLayer { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

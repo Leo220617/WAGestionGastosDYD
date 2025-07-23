@@ -43,5 +43,9 @@ namespace CheckIn.API.Models.ModelCliente
         public string IMP8 { get; set; }
         public string IMP13 { get; set; }
         public int DiasVencimiento { get; set; }
+        public bool serviceLayer { get; set; }
+        public bool es365 { get; set; }
+        public int SerieCliente { get; set; }
+        public int GrupoCliente { get; set; }
     }
 }

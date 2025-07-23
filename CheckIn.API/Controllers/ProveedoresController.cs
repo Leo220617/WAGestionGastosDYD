@@ -10,6 +10,7 @@ using S22.Imap;
 using SelectPdf;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
@@ -124,6 +125,9 @@ namespace CheckIn.API.Controllers
 
                     db.Proveedores.Add(Proveedor);
                     db.SaveChanges();
+
+
+                  
 
                 }
                 else

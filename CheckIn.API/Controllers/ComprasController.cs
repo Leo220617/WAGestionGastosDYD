@@ -1,7 +1,11 @@
-﻿using CheckIn.API.Models;
+﻿using Azure.Identity;
+using CheckIn.API.Models;
 using CheckIn.API.Models.ModelCliente;
 using CheckIn.API.Models.ModelMain;
 using iTextSharp.text.pdf;
+using Microsoft.Graph;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using S22.Imap;
 using SAPbobsCOM;
 using System;
@@ -31,6 +35,118 @@ namespace CheckIn.API.Controllers
 
         G G = new G();
 
+        public class LoginRequest
+        {
+            public string CompanyDB { get; set; }
+            public string UserName { get; set; }
+            public string Password { get; set; }
+        }
+        public class LoginResponse
+        {
+            public string odatametadata { get; set; }
+            public string SessionId { get; set; }
+            public string Version { get; set; }
+            public int SessionTimeout { get; set; }
+        }
+        private string Login(ConexionServiceLayer conexion)
+        {
+            try
+            {
+
+
+                var baseUrl = conexion.baseUrl;
+                // Request details
+                string url = $"{baseUrl}Login";
+                LoginRequest loginRequest = new LoginRequest()
+                {
+                    UserName = conexion.userName,
+                    Password = conexion.password,
+                    CompanyDB = conexion.companyDB
+                };
+
+                // Serialize request body to JSON
+                string jsonRequestBody = JsonConvert.SerializeObject(loginRequest);
+
+                // Make the request
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Method = "POST";
+                httpWebRequest.KeepAlive = true;
+                httpWebRequest.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                httpWebRequest.ServicePoint.Expect100Continue = false;
+
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(jsonRequestBody);
+                }
+
+                try
+                {
+                    // Call Service Layer
+                    var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        var result = streamReader.ReadToEnd();
+
+                        // Deserialize success response
+                        var responseInstance = JsonConvert.DeserializeObject<LoginResponse>(result);
+
+                        return responseInstance.SessionId;
+
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Unauthorized, etc.
+                    G.GuardarTxt("ErrorServiceLayer.txt", ex.Message);
+                    return "";
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                return "";
+            }
+        }
+        private bool Logout(ConexionServiceLayer conexion, string sessionId)
+        {
+            var baseUrl = conexion.baseUrl;
+            string logoutUrl = $"{baseUrl}Logout";
+
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(logoutUrl);
+                request.Method = "POST";
+                request.Accept = "application/json";
+                request.Headers.Add("Cookie", $"B1SESSION={sessionId}");
+                request.KeepAlive = true;
+                request.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                request.ServicePoint.Expect100Continue = false;
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    if (response.StatusCode == HttpStatusCode.NoContent
+                        || response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        G.GuardarTxt("ErrorServiceLayer.txt", "Logout failed. Status code: " + response.StatusCode);
+
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+                return false;
+            }
+        }
         public string GuardaImagenBase64(string ImagenBase64, string CarpetaImagen, string NomImagen, System.Drawing.Imaging.ImageFormat FormatoImagen)
         {
             Parametros Params = db.Parametros.FirstOrDefault();
@@ -93,25 +209,157 @@ namespace CheckIn.API.Controllers
                 var Pais = Licencia.CadenaConexionSAP;
                 foreach (var item in Correos)
                 {
-
-
-                    using (ImapClient client = new ImapClient(item.RecepcionHostName, (int)(item.RecepcionPort),
-                               item.RecepcionEmail, item.RecepcionPassword, AuthMethod.Login, (bool)(item.RecepcionUseSSL)))
+                    if (!Parametros.es365)
                     {
-
-                        IEnumerable<uint> uids = client.Search(SearchCondition.Unseen());
-
-                        DateTime recepcionUltimaLecturaImap = DateTime.Now;
-                        if (item.RecepcionUltimaLecturaImap != null)
-                            recepcionUltimaLecturaImap = item.RecepcionUltimaLecturaImap.Value;
-
-                        uids.Concat(client.Search(SearchCondition.SentSince(recepcionUltimaLecturaImap)));
-
-                        foreach (var uid in uids)
+                        using (ImapClient client = new ImapClient(item.RecepcionHostName, (int)(item.RecepcionPort),
+                             item.RecepcionEmail, item.RecepcionPassword, AuthMethod.Login, (bool)(item.RecepcionUseSSL)))
                         {
-                            System.Net.Mail.MailMessage message = client.GetMessage(uid);
 
-                            if (message.Attachments.Count > 0)
+                            IEnumerable<uint> uids = client.Search(SearchCondition.Unseen());
+
+                            DateTime recepcionUltimaLecturaImap = DateTime.Now;
+                            if (item.RecepcionUltimaLecturaImap != null)
+                                recepcionUltimaLecturaImap = item.RecepcionUltimaLecturaImap.Value;
+
+                            uids.Concat(client.Search(SearchCondition.SentSince(recepcionUltimaLecturaImap)));
+
+                            foreach (var uid in uids)
+                            {
+                                System.Net.Mail.MailMessage message = client.GetMessage(uid);
+
+                                if (message.Attachments.Count > 0)
+                                {
+                                    try
+                                    {
+                                        byte[] ByteArrayPDF = null;
+                                        int i = 1;
+
+                                        decimal idGeneral = 0;
+                                        foreach (var attachment in message.Attachments)
+                                        {
+
+                                            try
+                                            {
+                                                System.IO.StreamReader sr = new System.IO.StreamReader(attachment.ContentStream);
+
+
+
+                                                string texto = sr.ReadToEnd();
+
+                                                if (texto.Substring(0, 3) == "???")
+                                                    texto = texto.Substring(3);
+
+                                                if (texto.Contains("PDF"))
+                                                {
+
+                                                    ByteArrayPDF = ((MemoryStream)attachment.ContentStream).ToArray();
+
+
+
+                                                }
+
+
+                                                if ((texto.Contains("FacturaElectronica") || texto.Contains("<comprobante>"))
+                                                        && !texto.Contains("TiqueteElectronico")
+                                                        && !texto.Contains("NotaCreditoElectronica")
+                                                        && !texto.Contains("NotaDebitoElectronica"))
+                                                {
+                                                    var emailByteArray = G.Zip(texto);
+
+                                                    decimal id = db.Database.SqlQuery<decimal>("Insert Into BandejaEntrada(XmlFactura, Procesado, Asunto, Remitente,Pdf) " +
+                                                            " VALUES (@EmailJson, 0, @Asunto, @Remitente, @Pdf); SELECT SCOPE_IDENTITY(); ",
+                                                            new SqlParameter("@EmailJson", emailByteArray),
+                                                            new SqlParameter("@Asunto", message.Subject),
+                                                            new SqlParameter("@Remitente", message.From.ToString()),
+                                                            new SqlParameter("@Pdf", (ByteArrayPDF == null ? new byte[0] : ByteArrayPDF))).First();
+                                                    idGeneral = id;
+                                                    try
+                                                    {
+
+                                                        var datos = Pais == "E" ? G.ObtenerDatosXmlRechazadoEcuador(texto) : G.ObtenerDatosXmlRechazado(texto);
+
+                                                        db.Database.ExecuteSqlCommand("Update BandejaEntrada set NumeroConsecutivo=@NumeroConsecutivo, " +
+                                                            " TipoDocumento = @TipoDocumento, FechaEmision = @FechaEmision , " +
+                                                            " NombreEmisor = @NombreEmisor,IdEmisor = @IdEmisor ,CodigoMoneda = @CodigoMoneda , " +
+                                                            " TotalComprobante = @TotalComprobante " +
+                                                            " WHERE Id=@Id ",
+                                                             new SqlParameter("@NumeroConsecutivo", datos.NumeroConsecutivo),
+                                                             new SqlParameter("@TipoDocumento", datos.TipoDocumento),
+                                                             new SqlParameter("@FechaEmision", datos.FechaEmision),
+                                                             new SqlParameter("@NombreEmisor", datos.NombreEmisor),
+                                                             new SqlParameter("@IdEmisor", datos.Numero),
+                                                             new SqlParameter("@CodigoMoneda", datos.CodigoMoneda),
+                                                             new SqlParameter("@TotalComprobante", datos.TotalComprobante),
+                                                             new SqlParameter("@Id", id));
+                                                    }
+                                                    catch { }
+                                                }
+
+                                                if (i == message.Attachments.Count())
+                                                {
+                                                    if (idGeneral > 0)
+                                                    {
+                                                        var bandeja = db.BandejaEntrada.Where(a => a.Id == idGeneral).FirstOrDefault();
+
+                                                        if (bandeja.Pdf.Count() == 0)
+                                                        {
+                                                            db.Database.ExecuteSqlCommand("Update BandejaEntrada set Pdf=@Pdf " +
+
+                                                       " WHERE Id=@Id ",
+                                                        new SqlParameter("@Pdf", ByteArrayPDF),
+
+                                                        new SqlParameter("@Id", idGeneral));
+                                                        }
+
+                                                    }
+                                                }
+
+                                                i++;
+                                            }
+                                            catch (Exception ex)
+                                            {
+
+
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+
+                                    }
+                                }
+                                message.Dispose();
+
+                                await System.Threading.Tasks.Task.Delay(100);
+                            }
+                            db.Entry(item).State = EntityState.Modified;
+                            item.RecepcionUltimaLecturaImap = DateTime.Now;
+                            db.SaveChanges();
+
+                        }
+                    }
+                    else
+                    {
+                        var credentials = new ClientSecretCredential(
+              item.Tenant,
+              item.RecepcionPassword, //clientId
+              item.RecepcionHostName, //Secret
+              new TokenCredentialOptions { AuthorityHost = AzureAuthorityHosts.AzurePublicCloud });
+
+                        // Define a new Microsoft Graph service client.            
+                        GraphServiceClient _graphServiceClient = new GraphServiceClient(credentials);
+
+                        // Get the e-mails for a specific user.
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                        var messages = await _graphServiceClient.Users[item.RecepcionEmail].Messages.Request().Filter("isRead eq false").GetAsync();
+                        var messageIds = new List<String>();
+                        foreach (var message in messages)
+                        {
+                            await _graphServiceClient.Users[item.RecepcionEmail].Messages[message.Id].Request().UpdateAsync(new Microsoft.Graph.Message() { IsRead = true });
+                            var menssage = await _graphServiceClient.Users[item.RecepcionEmail].Messages[message.Id].Request().Expand("attachments").GetAsync();
+                            messageIds.Add(menssage.Id.ToString());
+                            if (menssage.Attachments.Count > 0)
                             {
                                 try
                                 {
@@ -119,16 +367,15 @@ namespace CheckIn.API.Controllers
                                     int i = 1;
 
                                     decimal idGeneral = 0;
-                                    foreach (var attachment in message.Attachments)
+                                    foreach (var attachment in menssage.Attachments.CurrentPage)
                                     {
 
                                         try
                                         {
-                                            System.IO.StreamReader sr = new System.IO.StreamReader(attachment.ContentStream);
-
-
-
-                                            string texto = sr.ReadToEnd();
+                                            var att = await _graphServiceClient.Users[item.RecepcionEmail].Messages[menssage.Id].Attachments[attachment.Id].Request().GetAsync();
+                                            var base64 = Convert.ToBase64String(((Microsoft.Graph.FileAttachment)att).ContentBytes);
+                                            var base64EncodedBytes = System.Convert.FromBase64String(base64);
+                                            var texto = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
 
                                             if (texto.Substring(0, 3) == "???")
                                                 texto = texto.Substring(3);
@@ -136,8 +383,8 @@ namespace CheckIn.API.Controllers
                                             if (texto.Contains("PDF"))
                                             {
 
-                                                ByteArrayPDF = ((MemoryStream)attachment.ContentStream).ToArray();
-
+                                                ByteArrayPDF = ((Microsoft.Graph.FileAttachment)att).ContentBytes;
+                                                //ByteArrayPDF = G.Zip(texto);
 
 
                                             }
@@ -149,37 +396,43 @@ namespace CheckIn.API.Controllers
                                                     && !texto.Contains("NotaDebitoElectronica"))
                                             {
                                                 var emailByteArray = G.Zip(texto);
-
                                                 decimal id = db.Database.SqlQuery<decimal>("Insert Into BandejaEntrada(XmlFactura, Procesado, Asunto, Remitente,Pdf) " +
-                                                        " VALUES (@EmailJson, 0, @Asunto, @Remitente, @Pdf); SELECT SCOPE_IDENTITY(); ",
-                                                        new SqlParameter("@EmailJson", emailByteArray),
-                                                        new SqlParameter("@Asunto", message.Subject),
-                                                        new SqlParameter("@Remitente", message.From.ToString()),
-                                                        new SqlParameter("@Pdf", (ByteArrayPDF == null ? new byte[0] : ByteArrayPDF))).First();
+                                                            " VALUES (@EmailJson, 0, @Asunto, @Remitente, @Pdf); SELECT SCOPE_IDENTITY(); ",
+                                                            new SqlParameter("@EmailJson", emailByteArray),
+                                                            new SqlParameter("@Asunto", message.Subject),
+                                                            new SqlParameter("@Remitente", message.From.ToString()),
+                                                            new SqlParameter("@Pdf", (ByteArrayPDF == null ? new byte[0] : ByteArrayPDF))).First();
+
                                                 idGeneral = id;
                                                 try
                                                 {
 
                                                     var datos = Pais == "E" ? G.ObtenerDatosXmlRechazadoEcuador(texto) : G.ObtenerDatosXmlRechazado(texto);
+                                                    datos.NumeroConsecutivo = datos.NumeroConsecutivo.TrimEnd();
+                                                    datos.Numero = datos.Numero.TrimEnd();
 
                                                     db.Database.ExecuteSqlCommand("Update BandejaEntrada set NumeroConsecutivo=@NumeroConsecutivo, " +
-                                                        " TipoDocumento = @TipoDocumento, FechaEmision = @FechaEmision , " +
-                                                        " NombreEmisor = @NombreEmisor,IdEmisor = @IdEmisor ,CodigoMoneda = @CodigoMoneda , " +
-                                                        " TotalComprobante = @TotalComprobante " +
-                                                        " WHERE Id=@Id ",
-                                                         new SqlParameter("@NumeroConsecutivo", datos.NumeroConsecutivo),
-                                                         new SqlParameter("@TipoDocumento", datos.TipoDocumento),
-                                                         new SqlParameter("@FechaEmision", datos.FechaEmision),
-                                                         new SqlParameter("@NombreEmisor", datos.NombreEmisor),
-                                                         new SqlParameter("@IdEmisor", datos.Numero),
-                                                         new SqlParameter("@CodigoMoneda", datos.CodigoMoneda),
-                                                         new SqlParameter("@TotalComprobante", datos.TotalComprobante),
-                                                         new SqlParameter("@Id", id));
+                                                         " TipoDocumento = @TipoDocumento, FechaEmision = @FechaEmision , " +
+                                                         " NombreEmisor = @NombreEmisor,IdEmisor = @IdEmisor ,CodigoMoneda = @CodigoMoneda , " +
+                                                         " TotalComprobante = @TotalComprobante " +
+                                                         " WHERE Id=@Id ",
+                                                          new SqlParameter("@NumeroConsecutivo", datos.NumeroConsecutivo),
+                                                          new SqlParameter("@TipoDocumento", datos.TipoDocumento),
+                                                          new SqlParameter("@FechaEmision", datos.FechaEmision),
+                                                          new SqlParameter("@NombreEmisor", datos.NombreEmisor),
+                                                          new SqlParameter("@IdEmisor", datos.Numero),
+                                                          new SqlParameter("@CodigoMoneda", datos.CodigoMoneda),
+                                                          new SqlParameter("@TotalComprobante", datos.TotalComprobante),
+                                                          new SqlParameter("@Id", id));
+
+
+
+
                                                 }
-                                                catch { }
+                                                catch (Exception ex) { }
                                             }
 
-                                            if (i == message.Attachments.Count())
+                                            if (i == menssage.Attachments.Count())
                                             {
                                                 if (idGeneral > 0)
                                                 {
@@ -195,6 +448,7 @@ namespace CheckIn.API.Controllers
                                                     new SqlParameter("@Id", idGeneral));
                                                     }
 
+
                                                 }
                                             }
 
@@ -202,26 +456,33 @@ namespace CheckIn.API.Controllers
                                         }
                                         catch (Exception ex)
                                         {
-
+                                            BitacoraErrores be = new BitacoraErrores();
+                                            be.Descripcion = ex.Message;
+                                            be.StackTrace = ex.StackTrace;
+                                            be.Fecha = DateTime.Now;
+                                            db.BitacoraErrores.Add(be);
+                                            db.SaveChanges();
 
                                         }
                                     }
                                 }
                                 catch (Exception ex)
                                 {
-
+                                    BitacoraErrores be = new BitacoraErrores();
+                                    be.Descripcion = ex.Message;
+                                    be.StackTrace = ex.StackTrace;
+                                    be.Fecha = DateTime.Now;
+                                    db.BitacoraErrores.Add(be);
+                                    db.SaveChanges();
 
                                 }
                             }
-                            message.Dispose();
 
-                            await System.Threading.Tasks.Task.Delay(100);
+
                         }
-                        db.Entry(item).State = EntityState.Modified;
-                        item.RecepcionUltimaLecturaImap = DateTime.Now;
-                        db.SaveChanges();
-
                     }
+
+
 
                 }
 
@@ -252,7 +513,7 @@ namespace CheckIn.API.Controllers
             try
             {
                 G.AbrirConexionAPP(out db);
-
+                var param = db.Parametros.FirstOrDefault();
                 var Lista = db.BandejaEntrada.Where(a => a.Procesado == "0" && string.IsNullOrEmpty(a.Mensaje)).ToList();
                 var Compañia = G.ObtenerCedulaJuridia();
 
@@ -386,7 +647,7 @@ namespace CheckIn.API.Controllers
                         }
 
                         factura.MedioPago = Pais == "E" ? "" : G.ExtraerValorDeNodoXml(xml, "MedioPago");
-                        if (attachmentBody.Contains("xml-schemas/v4.3"))
+                        if (attachmentBody.Contains("xml-schemas/v4.3") || attachmentBody.Contains("xml-schemas/v4.4"))
                         {
                             factura.CodMoneda = G.ExtraerValorDeNodoXml(xml, "ResumenFactura/CodigoTipoMoneda/CodigoMoneda");
 
@@ -819,7 +1080,7 @@ namespace CheckIn.API.Controllers
                                 det.NomProveedor = NomProveedor;
                                 det.NumLinea = short.Parse(G.ExtraerValorDeNodoXml(item2, "NumeroLinea"));
 
-                                if (attachmentBody.Contains("xml-schemas/v4.3"))
+                                if (attachmentBody.Contains("xml-schemas/v4.3") || attachmentBody.Contains("xml-schemas/v4.4"))
                                 {
                                     det.CodPro = G.ExtraerValorDeNodoXml(item2, "CodigoComercial/Codigo");
                                     if (det.CodPro.Length > 20)
@@ -989,175 +1250,322 @@ namespace CheckIn.API.Controllers
                         }
                         catch (Exception ex)
                         {
-                            try
+                            if (!param.serviceLayer)
                             {
-                                Conexion.Desconectar();
-                                var client = (SAPbobsCOM.BusinessPartners)Conexion.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oBusinessPartners);
-                                client.CardName = factura.NomProveedor;
-                                client.Valid = BoYesNoEnum.tYES;
-                                client.CardType = BoCardTypes.cSupplier;
-                                client.Currency = "##";
-                                client.FederalTaxID = factura.CodProveedor;
-                                client.Series = 76;
-                                client.GroupCode = 101;
-                                client.EmailAddress = G.ExtraerValorDeNodoXml(xml, "Emisor/CorreoElectronico");
-                                client.Phone1 = G.ExtraerValorDeNodoXml(xml, "Emisor/Telefono/NumTelefono");
-                                client.UserFields.Fields.Item("U_DYD_Actividad").Value = G.ExtraerValorDeNodoXml(xml, "CodigoActividad").ToString();
-
-
-                                var Provincia = Convert.ToInt32(G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/Provincia").ToString());
-                                var Canton = Convert.ToInt32(G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/Canton").ToString());
-                                var Distrito = Convert.ToInt32(G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/Distrito").ToString());
-                                var Barrio = Convert.ToInt32(G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/Barrio").ToString());
-
-                                var C = "";
-                                var D = "";
-                                var B = "";
-
-                                Conexion g = new Conexion();
-                                SqlConnection Cn = new SqlConnection(g.DevuelveCadena());
-
                                 try
                                 {
-                                  
-                                    SqlCommand Cmd = new SqlCommand("Select * from Cantones where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'", Cn);
-                                    SqlDataAdapter Da = new SqlDataAdapter(Cmd);
-                                    DataSet Ds = new DataSet();
-                                    Cn.Open();
-                                    Da.Fill(Ds, "Cantones1");
-                                    C = Ds.Tables["Cantones1"].Rows[0]["NomCanton"].ToString();
-
-                                    Cn.Close();
-
-                                }
-                                catch (Exception)
-                                {
-
-                                    
-                                }
-
-                                try
-                                {
-                                    SqlCommand CmdD = new SqlCommand("Select * from Distritos where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'" + " and CodDistrito = '" + Distrito + "'", Cn);
-                                    SqlDataAdapter DaD = new SqlDataAdapter(CmdD);
-                                    DataSet DsD = new DataSet();
-                                    Cn.Open();
-                                    DaD.Fill(DsD, "Distritos1");
-                                    D = DsD.Tables["Distritos1"].Rows[0]["NomDistrito"].ToString();
-
-                                    Cn.Close();
-                                }
-                                catch (Exception)
-                                {
-
-                                     
-                                }
-
-
-                                try
-                                {
-                                    SqlCommand CmdB = new SqlCommand("Select * from Barrios where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'" + " and CodDistrito = '" + Distrito + "' and CodBarrio = '" + Barrio + "'", Cn);
-                                    SqlDataAdapter DaB = new SqlDataAdapter(CmdB);
-                                    DataSet DsB = new DataSet();
-                                    Cn.Open();
-                                    DaB.Fill(DsB, "Barrios1");
-                                    B = DsB.Tables["Barrios1"].Rows[0]["NomBarrio"].ToString();
-
-                                    Cn.Close();
-                                }
-                                catch (Exception)
-                                {
-
-                                     
-                                }
-                                
-
-                                client.Addresses.Add();
-                                client.Addresses.SetCurrentLine(0);
-
-
-
-                                client.City = C;
-                                client.County = C;
-                                client.Block = D;
-                                client.Address = G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString().Length > 49 ? G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString().Substring(0, 49) : G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString();
-
-                                client.Addresses.AddressName = client.Address;
-                                client.Addresses.City = C;
-                                client.Addresses.County = C;
-                                client.Addresses.State = G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/Provincia").ToString();
-                                client.Addresses.Street = G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString().Length > 99 ? G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString().Substring(0, 99) : G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString();
-                                client.Addresses.Block = D;
-
-                                client.Addresses.TypeOfAddress = "S";
-
-                                var respuest = client.Add();
-
-                                if (respuest != 0)
-                                {
-                                    BitacoraErrores error = new BitacoraErrores();
-                                    error.Descripcion = Conexion.Company.GetLastErrorDescription();
-                                    error.StackTrace = "Insercion del proveedor en la factura " + factura.ConsecutivoHacienda;
-                                    error.Fecha = DateTime.Now;
-                                    db.BitacoraErrores.Add(error);
-                                    db.SaveChanges();
                                     Conexion.Desconectar();
-                                    factura.CardCode = "";
-                                }
-                                else
-                                {
+                                    var client = (SAPbobsCOM.BusinessPartners)Conexion.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oBusinessPartners);
+                                    client.CardName = factura.NomProveedor;
+                                    client.Valid = BoYesNoEnum.tYES;
+                                    client.CardType = BoCardTypes.cSupplier;
+                                    client.Currency = "##";
+                                    client.FederalTaxID = factura.CodProveedor;
+                                    client.Series = 76;
+                                    client.GroupCode = 101;
+                                    client.EmailAddress = G.ExtraerValorDeNodoXml(xml, "Emisor/CorreoElectronico");
+                                    client.Phone1 = G.ExtraerValorDeNodoXml(xml, "Emisor/Telefono/NumTelefono");
+                                    client.UserFields.Fields.Item("U_DYD_Actividad").Value = G.ExtraerValorDeNodoXml(xml, "CodigoActividad").ToString();
+
+
+                                    var Provincia = Convert.ToInt32(G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/Provincia").ToString());
+                                    var Canton = Convert.ToInt32(G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/Canton").ToString());
+                                    var Distrito = Convert.ToInt32(G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/Distrito").ToString());
+                                    var Barrio = Convert.ToInt32(G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/Barrio").ToString());
+
+                                    var C = "";
+                                    var D = "";
+                                    var B = "";
+
+                                    Conexion g = new Conexion();
+                                    SqlConnection Cn = new SqlConnection(g.DevuelveCadena());
+
                                     try
                                     {
-                                        string SQL = " Select t0.LicTradNum , t0.cardcode,t0.CardName, ";
-                                        SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
-                                        SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
-                                        SQL += " else Replace(LicTradNum, '-','') end = '" + factura.CodProveedor + "' ";
 
+                                        SqlCommand Cmd = new SqlCommand("Select * from Cantones where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'", Cn);
+                                        SqlDataAdapter Da = new SqlDataAdapter(Cmd);
+                                        DataSet Ds = new DataSet();
+                                        Cn.Open();
+                                        Da.Fill(Ds, "Cantones1");
+                                        C = Ds.Tables["Cantones1"].Rows[0]["NomCanton"].ToString();
 
-                                        SqlConnection Cn2 = new SqlConnection(g.DevuelveCadena());
-                                        SqlCommand Cmd2 = new SqlCommand(SQL, Cn2);
-                                        SqlDataAdapter Da2 = new SqlDataAdapter(Cmd2);
-                                        DataSet Ds2 = new DataSet();
-                                        Cn2.Open();
-                                        Da2.Fill(Ds2, "Proveedor");
+                                        Cn.Close();
 
-                                        factura.CardCode = Ds2.Tables["Proveedor"].Rows[0]["CardCode"].ToString();
-                                        Cn2.Close();
                                     }
-                                    catch (Exception rr)
+                                    catch (Exception)
+                                    {
+
+
+                                    }
+
+                                    try
+                                    {
+                                        SqlCommand CmdD = new SqlCommand("Select * from Distritos where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'" + " and CodDistrito = '" + Distrito + "'", Cn);
+                                        SqlDataAdapter DaD = new SqlDataAdapter(CmdD);
+                                        DataSet DsD = new DataSet();
+                                        Cn.Open();
+                                        DaD.Fill(DsD, "Distritos1");
+                                        D = DsD.Tables["Distritos1"].Rows[0]["NomDistrito"].ToString();
+
+                                        Cn.Close();
+                                    }
+                                    catch (Exception)
+                                    {
+
+
+                                    }
+
+
+                                    try
+                                    {
+                                        SqlCommand CmdB = new SqlCommand("Select * from Barrios where CodCanton = '" + Canton + "' and CodProvincia = '" + Provincia + "'" + " and CodDistrito = '" + Distrito + "' and CodBarrio = '" + Barrio + "'", Cn);
+                                        SqlDataAdapter DaB = new SqlDataAdapter(CmdB);
+                                        DataSet DsB = new DataSet();
+                                        Cn.Open();
+                                        DaB.Fill(DsB, "Barrios1");
+                                        B = DsB.Tables["Barrios1"].Rows[0]["NomBarrio"].ToString();
+
+                                        Cn.Close();
+                                    }
+                                    catch (Exception)
+                                    {
+
+
+                                    }
+
+
+                                    client.Addresses.Add();
+                                    client.Addresses.SetCurrentLine(0);
+
+
+
+                                    client.City = C;
+                                    client.County = C;
+                                    client.Block = D;
+                                    client.Address = G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString().Length > 49 ? G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString().Substring(0, 49) : G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString();
+
+                                    client.Addresses.AddressName = client.Address;
+                                    client.Addresses.City = C;
+                                    client.Addresses.County = C;
+                                    client.Addresses.State = G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/Provincia").ToString();
+                                    client.Addresses.Street = G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString().Length > 99 ? G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString().Substring(0, 99) : G.ExtraerValorDeNodoXml(xml, "Emisor/Ubicacion/OtrasSenas").ToString();
+                                    client.Addresses.Block = D;
+
+                                    client.Addresses.TypeOfAddress = "S";
+
+                                    var respuest = client.Add();
+
+                                    if (respuest != 0)
                                     {
                                         BitacoraErrores error = new BitacoraErrores();
-                                        error.Descripcion = rr.Message + " " + " No se pudo crear el proveedor";
-                                        error.StackTrace = "NO se encontro el proveedor en la factura " + factura.ConsecutivoHacienda;
+                                        error.Descripcion = Conexion.Company.GetLastErrorDescription();
+                                        error.StackTrace = "Insercion del proveedor en la factura " + factura.ConsecutivoHacienda;
                                         error.Fecha = DateTime.Now;
                                         db.BitacoraErrores.Add(error);
                                         db.SaveChanges();
+                                        Conexion.Desconectar();
                                         factura.CardCode = "";
                                     }
-                                }
+                                    else
+                                    {
+                                        try
+                                        {
+                                            string SQL = " Select t0.LicTradNum , t0.cardcode,t0.CardName, ";
+                                            SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                                            SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                                            SQL += " else Replace(LicTradNum, '-','') end = '" + factura.CodProveedor + "' ";
 
+
+                                            SqlConnection Cn2 = new SqlConnection(g.DevuelveCadena());
+                                            SqlCommand Cmd2 = new SqlCommand(SQL, Cn2);
+                                            SqlDataAdapter Da2 = new SqlDataAdapter(Cmd2);
+                                            DataSet Ds2 = new DataSet();
+                                            Cn2.Open();
+                                            Da2.Fill(Ds2, "Proveedor");
+
+                                            factura.CardCode = Ds2.Tables["Proveedor"].Rows[0]["CardCode"].ToString();
+                                            Cn2.Close();
+                                        }
+                                        catch (Exception rr)
+                                        {
+                                            BitacoraErrores error = new BitacoraErrores();
+                                            error.Descripcion = rr.Message + " " + " No se pudo crear el proveedor";
+                                            error.StackTrace = "NO se encontro el proveedor en la factura " + factura.ConsecutivoHacienda;
+                                            error.Fecha = DateTime.Now;
+                                            db.BitacoraErrores.Add(error);
+                                            db.SaveChanges();
+                                            factura.CardCode = "";
+                                        }
+                                    }
+
+                                }
+                                catch (Exception e)
+                                {
+                                    try
+                                    {
+                                        BitacoraErrores error = new BitacoraErrores();
+                                        error.Descripcion = e.Message + " " + " al hacer un proveedor " + Conexion.Company.GetLastErrorDescription();
+                                        error.StackTrace = e.StackTrace;
+                                        error.Fecha = DateTime.Now;
+
+                                        db.BitacoraErrores.Add(error);
+                                        db.SaveChanges();
+                                        Conexion.Desconectar();
+
+                                    }
+                                    catch (Exception ex4)
+                                    {
+
+
+                                    }
+
+                                }
                             }
-                            catch (Exception e)
+                            else
                             {
+                                var conexionServiceLayer = db.ConexionServiceLayer.FirstOrDefault();
+                                var baseUrl = conexionServiceLayer.baseUrl;
+                                string postingUrl = baseUrl + "BusinessPartners";
+
+
+
+                                JObject payload = new JObject
+                                    {
+                                        { "CardName", factura.NomProveedor },
+                                        { "CardType", "S" },
+                                        { "Currency", "##"}, // Default en caso de vacío
+                                        { "FederalTaxID", factura.CodProveedor },
+                                        { "Series", param.SerieCliente },
+                                        { "GroupCode", param.GrupoCliente },
+                                        { "EmailAddress", G.ExtraerValorDeNodoXml(xml, "Emisor/CorreoElectronico") },
+                                        { "Phone1", G.ExtraerValorDeNodoXml(xml, "Emisor/Telefono/NumTelefono") },
+                                        { "Valid", "tYES" }
+                                    };
+
+
+
+                                // Enviar factura
+                                var sessionId = Login(conexionServiceLayer);
+                                if (string.IsNullOrEmpty(sessionId))
+                                {
+                                    throw new Exception("No se ha podido realizar login con servicelayer. Revisar bitacora");
+                                }
                                 try
                                 {
-                                    BitacoraErrores error = new BitacoraErrores();
-                                    error.Descripcion = e.Message + " " + " al hacer un proveedor " + Conexion.Company.GetLastErrorDescription();
-                                    error.StackTrace = e.StackTrace;
-                                    error.Fecha = DateTime.Now;
+                                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(postingUrl);
+                                    request.Method = "POST";
+                                    request.ContentType = "application/json";
+                                    request.Accept = "application/json";
+                                    request.Headers.Add("Cookie", $"B1SESSION={sessionId}");
+                                    request.KeepAlive = true;
+                                    request.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                                    request.ServicePoint.Expect100Continue = false;
 
-                                    db.BitacoraErrores.Add(error);
-                                    db.SaveChanges();
-                                    Conexion.Desconectar();
+                                    using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                                    {
+                                        streamWriter.Write(payload.ToString());
+                                        streamWriter.Flush();
+                                        streamWriter.Close();
+                                    }
 
+                                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                                    {
+                                        var result = "";
+                                        using (var streamReader = new StreamReader(response.GetResponseStream()))
+                                        {
+                                            result = streamReader.ReadToEnd();
+                                        }
+
+                                        if (response.StatusCode == HttpStatusCode.Created)
+                                        {
+                                            JObject jsonObject = JObject.Parse(result);
+
+                                            // Extract the meaningful values
+
+                                            try
+                                            {
+                                                Conexion g = new Conexion();
+                                                string SQL = " Select t0.LicTradNum , t0.cardcode,t0.CardName, ";
+                                                SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                                                SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                                                SQL += " else Replace(LicTradNum, '-','') end = '" + factura.CodProveedor + "' ";
+
+
+                                                SqlConnection Cn2 = new SqlConnection(g.DevuelveCadena());
+                                                SqlCommand Cmd2 = new SqlCommand(SQL, Cn2);
+                                                SqlDataAdapter Da2 = new SqlDataAdapter(Cmd2);
+                                                DataSet Ds2 = new DataSet();
+                                                Cn2.Open();
+                                                Da2.Fill(Ds2, "Proveedor");
+
+                                                factura.CardCode = Ds2.Tables["Proveedor"].Rows[0]["CardCode"].ToString();
+                                                Cn2.Close();
+                                            }
+                                            catch (Exception rr)
+                                            {
+                                                BitacoraErrores error = new BitacoraErrores();
+                                                error.Descripcion = rr.Message + " " + " No se pudo crear el proveedor";
+                                                error.StackTrace = "NO se encontro el proveedor en la factura " + factura.ConsecutivoHacienda;
+                                                error.Fecha = DateTime.Now;
+                                                db.BitacoraErrores.Add(error);
+                                                db.SaveChanges();
+                                                factura.CardCode = "";
+                                            }
+
+
+                                            var respLogout = Logout(conexionServiceLayer, sessionId);
+
+
+
+                                        }
+                                        else
+                                        {
+                                            BitacoraErrores be = new BitacoraErrores();
+                                            be.Descripcion = "Cliente #" + factura.NomProveedor + " ";
+                                            be.StackTrace = "INSETAR CLIENTE SAP";
+                                            be.Metodo = "Insercion de cliente nombre " + factura.NomProveedor;
+                                            be.Fecha = DateTime.Now;
+                                            db.BitacoraErrores.Add(be);
+                                            db.SaveChanges();
+
+
+                                        }
+                                    }
                                 }
-                                catch (Exception ex4)
+                                catch (WebException ex1)
                                 {
+                                    string errorBody = "";
+                                    if (ex1.Response != null)
+                                    {
+                                        using (var reader = new StreamReader(ex1.Response.GetResponseStream()))
+                                        {
+                                            errorBody = reader.ReadToEnd();
+                                        }
+                                    }
 
+                                    BitacoraErrores be = new BitacoraErrores();
+                                    be.Descripcion = "Cliente: " + factura.NomProveedor + " " + ex1.Message + " | Respuesta: " + errorBody;
+                                    be.StackTrace = "";
+                                    be.Metodo = "Insercion de cliente #" + factura.CodProveedor;
+                                    be.Fecha = DateTime.Now;
+                                    db.BitacoraErrores.Add(be);
+                                    db.SaveChanges();
+                                }
+                                catch (Exception ex1)
+                                {
+                                    BitacoraErrores be = new BitacoraErrores();
+                                    be.Descripcion = "Cliente: " + factura.NomProveedor + " " + ex1.Message;
+                                    be.StackTrace = "";
+                                    be.Metodo = "Insercion de cliente #" + factura.CodProveedor;
+                                    be.Fecha = DateTime.Now;
+                                    db.BitacoraErrores.Add(be);
+                                    db.SaveChanges();
 
                                 }
 
                             }
+
 
 
                         }
@@ -1227,7 +1635,7 @@ namespace CheckIn.API.Controllers
                 string carpeta = G.ObtenerConfig("CarpetaXML"); // Ruta de la carpeta que contiene los archivos XML
 
                 // Enumerar los archivos XML en la carpeta
-                string[] archivosXml = Directory.GetFiles(carpeta, "*.xml");
+                string[] archivosXml = System.IO.Directory.GetFiles(carpeta, "*.xml");
 
                 foreach (string archivoXml in archivosXml)
                 {
@@ -1366,7 +1774,7 @@ namespace CheckIn.API.Controllers
                         }
 
                         factura.MedioPago = Pais == "E" ? "" : G.ExtraerValorDeNodoXml(xml, "MedioPago");
-                        if (xmlBase64.Contains("xml-schemas/v4.3"))
+                        if (xmlBase64.Contains("xml-schemas/v4.3") || xmlBase64.Contains("xml-schemas/v4.4"))
                         {
                             factura.CodMoneda = G.ExtraerValorDeNodoXml(xml, "ResumenFactura/CodigoTipoMoneda/CodigoMoneda");
 
@@ -1543,7 +1951,7 @@ namespace CheckIn.API.Controllers
                         var pdfResp = "";
                         try
                         {
-                            string[] archivosPdf = Directory.GetFiles(carpeta, nombre.Replace(".xml", "") + ".pdf");
+                            string[] archivosPdf = System.IO.Directory.GetFiles(carpeta, nombre.Replace(".xml", "") + ".pdf");
 
                             if (archivosPdf.Length > 0)
                             {
@@ -1565,7 +1973,7 @@ namespace CheckIn.API.Controllers
                                     try
                                     {
                                         // Eliminar el archivo
-                                        File.Delete(archivosPdf[0]);
+                                        System.IO.File.Delete(archivosPdf[0]);
                                     }
                                     catch (Exception)
                                     {
@@ -1844,7 +2252,7 @@ namespace CheckIn.API.Controllers
                                 det.NomProveedor = NomProveedor;
                                 det.NumLinea = short.Parse(G.ExtraerValorDeNodoXml(item2, "NumeroLinea"));
 
-                                if (xmlBase64.Contains("xml-schemas/v4.3"))
+                                if (xmlBase64.Contains("xml-schemas/v4.3") || xmlBase64.Contains("xml-schemas/v4.4"))
                                 {
                                     det.CodPro = G.ExtraerValorDeNodoXml(item2, "CodigoComercial/Codigo");
                                     if (det.CodPro.Length > 20)
@@ -2001,7 +2409,7 @@ namespace CheckIn.API.Controllers
                         try
                         {
                             // Eliminar el archivo
-                            File.Delete(archivoXml);
+                            System.IO.File.Delete(archivoXml);
                         }
                         catch (Exception)
                         {
@@ -2015,7 +2423,7 @@ namespace CheckIn.API.Controllers
                         {
                             var destino = G.ObtenerConfig("CarpetaXMLError") + "\\" + nombre;
                             // Mover el archivo
-                            File.Move(archivoXml, destino);
+                            System.IO.File.Move(archivoXml, destino);
                         }
                         catch (Exception)
                         {
@@ -2073,7 +2481,7 @@ namespace CheckIn.API.Controllers
                 string carpeta = G.ObtenerConfig("CarpetaXMLGuatemala"); // Ruta de la carpeta que contiene los archivos XML
 
                 // Enumerar los archivos XML en la carpeta
-                string[] archivosXml = Directory.GetFiles(carpeta, "*.xml");
+                string[] archivosXml = System.IO.Directory.GetFiles(carpeta, "*.xml");
 
                 foreach (string archivoXml in archivosXml)
                 {
@@ -2232,7 +2640,7 @@ namespace CheckIn.API.Controllers
                         var pdfResp = "";
                         try
                         {
-                            string[] archivosPdf = Directory.GetFiles(carpeta, nombre.Replace(".xml", "") + ".pdf");
+                            string[] archivosPdf = System.IO.Directory.GetFiles(carpeta, nombre.Replace(".xml", "") + ".pdf");
 
                             if (archivosPdf.Length > 0)
                             {
@@ -2254,7 +2662,7 @@ namespace CheckIn.API.Controllers
                                     try
                                     {
                                         // Eliminar el archivo
-                                        File.Delete(archivosPdf[0]);
+                                        System.IO.File.Delete(archivosPdf[0]);
                                     }
                                     catch (Exception ex)
                                     {
@@ -2353,7 +2761,7 @@ namespace CheckIn.API.Controllers
                                     {
 
                                         var NombreIVA = impuestoNode.SelectSingleNode("dte:NombreCorto", nsmgr)?.InnerText;
-                                        switch(NombreIVA)
+                                        switch (NombreIVA)
                                         {
                                             case "IVA":
                                                 {
@@ -2530,14 +2938,14 @@ namespace CheckIn.API.Controllers
 
                         factura.TotalImpuesto = detCpmpras.Sum(a => a.ImpuestoMonto).Value;
 
-                        factura.TotalComprobante = detCpmpras.Sum(a => a.MontoTotal).Value; 
+                        factura.TotalComprobante = detCpmpras.Sum(a => a.MontoTotal).Value;
                         db.EncCompras.Add(factura);
                         db.SaveChanges();
 
                         try
                         {
                             // Eliminar el archivo
-                            File.Delete(archivoXml);
+                            System.IO.File.Delete(archivoXml);
                         }
                         catch (Exception ex)
                         {
@@ -2552,7 +2960,7 @@ namespace CheckIn.API.Controllers
                         {
                             var destino = G.ObtenerConfig("CarpetaXMLError") + "\\" + nombre;
                             // Mover el archivo
-                            File.Move(archivoXml, destino);
+                            System.IO.File.Move(archivoXml, destino);
                         }
                         catch (Exception ex2)
                         {
@@ -2932,6 +3340,22 @@ namespace CheckIn.API.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, EncCompras);
 
             }
+            catch (InvalidOperationException ex)
+            {
+                foreach (var key in ex.Data.Keys)
+                {
+                    Console.WriteLine($"{key}: {ex.Data[key]}");
+                }
+                BitacoraErrores be = new BitacoraErrores();
+                be.Descripcion = ex.Message;
+                be.StackTrace = ex.StackTrace;
+                be.Metodo = "Error de GET Compras";
+                be.Fecha = DateTime.Now;
+                db.BitacoraErrores.Add(be);
+                db.SaveChanges();
+                G.CerrarConexionAPP(db);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
             catch (Exception ex)
             {
                 BitacoraErrores be = new BitacoraErrores();
@@ -3201,6 +3625,114 @@ namespace CheckIn.API.Controllers
                         EncCompras.PdfFactura = EncCompras.PdfFactura;
                     }
                     EncCompras.Comentario = compra.EncCompras.Comentario;
+
+                    try
+                    {
+                        string SQL = " Select top 1 t0.LicTradNum , t0.cardcode,t0.CardName, ";
+                        SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                        SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                        SQL += " else Replace(LicTradNum, '-','') end = '" + EncCompras.CodProveedor + "' ";
+
+                        Conexion g = new Conexion();
+                        SqlConnection Cn = new SqlConnection(g.DevuelveCadena());
+                        SqlCommand Cmd = new SqlCommand(SQL, Cn);
+                        SqlDataAdapter Da = new SqlDataAdapter(Cmd);
+                        DataSet Ds = new DataSet();
+                        Cn.Open();
+                        Da.Fill(Ds, "Proveedor");
+
+                        EncCompras.CardCode = Ds.Tables["Proveedor"].Rows[0]["cardcode"].ToString();
+                        Cn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        try
+                        {
+                            Conexion.Desconectar();
+                            var client = (SAPbobsCOM.BusinessPartners)Conexion.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oBusinessPartners);
+                            client.CardName = EncCompras.NomProveedor;
+                            client.Valid = BoYesNoEnum.tYES;
+                            client.CardType = BoCardTypes.cSupplier;
+                            client.Currency = "##";
+                            client.FederalTaxID = EncCompras.CodProveedor;
+                            client.Series = 76;
+                            client.GroupCode = 101;
+                            client.EmailAddress = EncCompras.EmailCliente;
+
+
+                            var respuest = client.Add();
+
+                            if (respuest != 0)
+                            {
+                                BitacoraErrores error = new BitacoraErrores();
+                                error.Descripcion = Conexion.Company.GetLastErrorDescription();
+                                error.StackTrace = "Insercion del proveedor en la factura " + EncCompras.ConsecutivoHacienda;
+                                error.Fecha = DateTime.Now;
+                                db.BitacoraErrores.Add(error);
+                                db.SaveChanges();
+                                Conexion.Desconectar();
+                                EncCompras.CardCode = "";
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    Conexion g = new Conexion();
+                                    string SQL = " Select t0.LicTradNum , t0.cardcode,t0.CardName, ";
+                                    SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                                    SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                                    SQL += " else Replace(LicTradNum, '-','') end = '" + EncCompras.CodProveedor + "' ";
+
+
+                                    SqlConnection Cn2 = new SqlConnection(g.DevuelveCadena());
+                                    SqlCommand Cmd2 = new SqlCommand(SQL, Cn2);
+                                    SqlDataAdapter Da2 = new SqlDataAdapter(Cmd2);
+                                    DataSet Ds2 = new DataSet();
+                                    Cn2.Open();
+                                    Da2.Fill(Ds2, "Proveedor");
+
+                                    EncCompras.CardCode = Ds2.Tables["Proveedor"].Rows[0]["CardCode"].ToString();
+                                    Cn2.Close();
+                                }
+                                catch (Exception rr)
+                                {
+                                    BitacoraErrores error = new BitacoraErrores();
+                                    error.Descripcion = rr.Message + " " + " No se pudo crear el proveedor";
+                                    error.StackTrace = "NO se encontro el proveedor en la factura " + EncCompras.ConsecutivoHacienda;
+                                    error.Fecha = DateTime.Now;
+                                    db.BitacoraErrores.Add(error);
+                                    db.SaveChanges();
+                                    EncCompras.CardCode = "";
+                                }
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            try
+                            {
+                                BitacoraErrores error = new BitacoraErrores();
+                                error.Descripcion = e.Message + " " + " al hacer un proveedor " + Conexion.Company.GetLastErrorDescription();
+                                error.StackTrace = e.StackTrace;
+                                error.Fecha = DateTime.Now;
+
+                                db.BitacoraErrores.Add(error);
+                                db.SaveChanges();
+                                Conexion.Desconectar();
+
+                            }
+                            catch (Exception ex4)
+                            {
+
+
+                            }
+
+                        }
+
+
+                    }
+
+
                     db.EncCompras.Add(EncCompras);
                     db.SaveChanges();
 
