@@ -518,6 +518,7 @@ namespace CheckIn.API.Controllers
                             { "DocCurrency", currency },
                             { "DocType", "dDocument_Service" },
                             { "NumAtCard", NumAtCard },
+                            { "Comments", "LIQUIDACION # " + U_Liquidacion },
                             { "DocumentLines", documentLines }
                         };
 

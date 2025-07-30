@@ -3646,84 +3646,232 @@ namespace CheckIn.API.Controllers
                     }
                     catch (Exception ex)
                     {
-                        try
-                        {
-                            Conexion.Desconectar();
-                            var client = (SAPbobsCOM.BusinessPartners)Conexion.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oBusinessPartners);
-                            client.CardName = EncCompras.NomProveedor;
-                            client.Valid = BoYesNoEnum.tYES;
-                            client.CardType = BoCardTypes.cSupplier;
-                            client.Currency = "##";
-                            client.FederalTaxID = EncCompras.CodProveedor;
-                            client.Series = 76;
-                            client.GroupCode = 101;
-                            client.EmailAddress = EncCompras.EmailCliente;
-
-
-                            var respuest = client.Add();
-
-                            if (respuest != 0)
-                            {
-                                BitacoraErrores error = new BitacoraErrores();
-                                error.Descripcion = Conexion.Company.GetLastErrorDescription();
-                                error.StackTrace = "Insercion del proveedor en la factura " + EncCompras.ConsecutivoHacienda;
-                                error.Fecha = DateTime.Now;
-                                db.BitacoraErrores.Add(error);
-                                db.SaveChanges();
-                                Conexion.Desconectar();
-                                EncCompras.CardCode = "";
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    Conexion g = new Conexion();
-                                    string SQL = " Select t0.LicTradNum , t0.cardcode,t0.CardName, ";
-                                    SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
-                                    SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
-                                    SQL += " else Replace(LicTradNum, '-','') end = '" + EncCompras.CodProveedor + "' ";
-
-
-                                    SqlConnection Cn2 = new SqlConnection(g.DevuelveCadena());
-                                    SqlCommand Cmd2 = new SqlCommand(SQL, Cn2);
-                                    SqlDataAdapter Da2 = new SqlDataAdapter(Cmd2);
-                                    DataSet Ds2 = new DataSet();
-                                    Cn2.Open();
-                                    Da2.Fill(Ds2, "Proveedor");
-
-                                    EncCompras.CardCode = Ds2.Tables["Proveedor"].Rows[0]["CardCode"].ToString();
-                                    Cn2.Close();
-                                }
-                                catch (Exception rr)
-                                {
-                                    BitacoraErrores error = new BitacoraErrores();
-                                    error.Descripcion = rr.Message + " " + " No se pudo crear el proveedor";
-                                    error.StackTrace = "NO se encontro el proveedor en la factura " + EncCompras.ConsecutivoHacienda;
-                                    error.Fecha = DateTime.Now;
-                                    db.BitacoraErrores.Add(error);
-                                    db.SaveChanges();
-                                    EncCompras.CardCode = "";
-                                }
-                            }
-
-                        }
-                        catch (Exception e)
+                        var param = db.Parametros.FirstOrDefault();
+                        if (!param.serviceLayer)
                         {
                             try
                             {
-                                BitacoraErrores error = new BitacoraErrores();
-                                error.Descripcion = e.Message + " " + " al hacer un proveedor " + Conexion.Company.GetLastErrorDescription();
-                                error.StackTrace = e.StackTrace;
-                                error.Fecha = DateTime.Now;
-
-                                db.BitacoraErrores.Add(error);
-                                db.SaveChanges();
                                 Conexion.Desconectar();
+                                var client = (SAPbobsCOM.BusinessPartners)Conexion.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oBusinessPartners);
+                                client.CardName = EncCompras.NomProveedor;
+                                client.Valid = BoYesNoEnum.tYES;
+                                client.CardType = BoCardTypes.cSupplier;
+                                client.Currency = "##";
+                                client.FederalTaxID = EncCompras.CodProveedor;
+                                client.Series = 76;
+                                client.GroupCode = 101;
+                                client.EmailAddress = EncCompras.EmailCliente;
+
+
+                                var respuest = client.Add();
+
+                                if (respuest != 0)
+                                {
+                                    BitacoraErrores error = new BitacoraErrores();
+                                    error.Descripcion = Conexion.Company.GetLastErrorDescription();
+                                    error.StackTrace = "Insercion del proveedor en la factura " + EncCompras.ConsecutivoHacienda;
+                                    error.Fecha = DateTime.Now;
+                                    db.BitacoraErrores.Add(error);
+                                    db.SaveChanges();
+                                    Conexion.Desconectar();
+                                    EncCompras.CardCode = "";
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        Conexion g = new Conexion();
+                                        string SQL = " Select t0.LicTradNum , t0.cardcode,t0.CardName, ";
+                                        SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                                        SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                                        SQL += " else Replace(LicTradNum, '-','') end = '" + EncCompras.CodProveedor + "' ";
+
+
+                                        SqlConnection Cn2 = new SqlConnection(g.DevuelveCadena());
+                                        SqlCommand Cmd2 = new SqlCommand(SQL, Cn2);
+                                        SqlDataAdapter Da2 = new SqlDataAdapter(Cmd2);
+                                        DataSet Ds2 = new DataSet();
+                                        Cn2.Open();
+                                        Da2.Fill(Ds2, "Proveedor");
+
+                                        EncCompras.CardCode = Ds2.Tables["Proveedor"].Rows[0]["CardCode"].ToString();
+                                        Cn2.Close();
+                                    }
+                                    catch (Exception rr)
+                                    {
+                                        BitacoraErrores error = new BitacoraErrores();
+                                        error.Descripcion = rr.Message + " " + " No se pudo crear el proveedor";
+                                        error.StackTrace = "NO se encontro el proveedor en la factura " + EncCompras.ConsecutivoHacienda;
+                                        error.Fecha = DateTime.Now;
+                                        db.BitacoraErrores.Add(error);
+                                        db.SaveChanges();
+                                        EncCompras.CardCode = "";
+                                    }
+                                }
 
                             }
-                            catch (Exception ex4)
+                            catch (Exception e)
                             {
+                                try
+                                {
+                                    BitacoraErrores error = new BitacoraErrores();
+                                    error.Descripcion = e.Message + " " + " al hacer un proveedor " + Conexion.Company.GetLastErrorDescription();
+                                    error.StackTrace = e.StackTrace;
+                                    error.Fecha = DateTime.Now;
 
+                                    db.BitacoraErrores.Add(error);
+                                    db.SaveChanges();
+                                    Conexion.Desconectar();
+
+                                }
+                                catch (Exception ex4)
+                                {
+
+
+                                }
+
+                            }
+
+                        }
+                        else
+                        {
+                            var conexionServiceLayer = db.ConexionServiceLayer.FirstOrDefault();
+                            var baseUrl = conexionServiceLayer.baseUrl;
+                            string postingUrl = baseUrl + "BusinessPartners";
+
+
+
+                            JObject payload = new JObject
+                                    {
+                                        { "CardName", EncCompras.NomProveedor },
+                                        { "CardType", "S" },
+                                        { "Currency", "##"}, // Default en caso de vacío
+                                        { "FederalTaxID", EncCompras.CodProveedor },
+                                        { "Series", param.SerieCliente },
+                                        { "GroupCode", param.GrupoCliente },
+                                        { "EmailAddress", EncCompras.EmailCliente },
+                                        { "Phone1", "" },
+                                        { "Valid", "tYES" }
+                                    };
+
+
+
+                            // Enviar factura
+                            var sessionId = Login(conexionServiceLayer);
+                            if (string.IsNullOrEmpty(sessionId))
+                            {
+                                throw new Exception("No se ha podido realizar login con servicelayer. Revisar bitacora");
+                            }
+                            try
+                            {
+                                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(postingUrl);
+                                request.Method = "POST";
+                                request.ContentType = "application/json";
+                                request.Accept = "application/json";
+                                request.Headers.Add("Cookie", $"B1SESSION={sessionId}");
+                                request.KeepAlive = true;
+                                request.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                                request.ServicePoint.Expect100Continue = false;
+
+                                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                                {
+                                    streamWriter.Write(payload.ToString());
+                                    streamWriter.Flush();
+                                    streamWriter.Close();
+                                }
+
+                                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                                {
+                                    var result = "";
+                                    using (var streamReader = new StreamReader(response.GetResponseStream()))
+                                    {
+                                        result = streamReader.ReadToEnd();
+                                    }
+
+                                    if (response.StatusCode == HttpStatusCode.Created)
+                                    {
+                                        JObject jsonObject = JObject.Parse(result);
+
+                                        // Extract the meaningful values
+
+                                        try
+                                        {
+                                            Conexion g = new Conexion();
+                                            string SQL = " Select t0.LicTradNum , t0.cardcode,t0.CardName, ";
+                                            SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                                            SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                                            SQL += " else Replace(LicTradNum, '-','') end = '" + EncCompras.CodProveedor + "' ";
+
+
+                                            SqlConnection Cn2 = new SqlConnection(g.DevuelveCadena());
+                                            SqlCommand Cmd2 = new SqlCommand(SQL, Cn2);
+                                            SqlDataAdapter Da2 = new SqlDataAdapter(Cmd2);
+                                            DataSet Ds2 = new DataSet();
+                                            Cn2.Open();
+                                            Da2.Fill(Ds2, "Proveedor");
+
+                                            EncCompras.CardCode = Ds2.Tables["Proveedor"].Rows[0]["CardCode"].ToString();
+                                            Cn2.Close();
+                                        }
+                                        catch (Exception rr)
+                                        {
+                                            BitacoraErrores error = new BitacoraErrores();
+                                            error.Descripcion = rr.Message + " " + " No se pudo crear el proveedor";
+                                            error.StackTrace = "NO se encontro el proveedor en la factura " + EncCompras.ConsecutivoHacienda;
+                                            error.Fecha = DateTime.Now;
+                                            db.BitacoraErrores.Add(error);
+                                            db.SaveChanges();
+                                            EncCompras.CardCode = "";
+                                        }
+
+
+                                        var respLogout = Logout(conexionServiceLayer, sessionId);
+
+
+
+                                    }
+                                    else
+                                    {
+                                        BitacoraErrores be = new BitacoraErrores();
+                                        be.Descripcion = "Cliente #" + EncCompras.NomProveedor + " ";
+                                        be.StackTrace = "INSETAR CLIENTE SAP";
+                                        be.Metodo = "Insercion de cliente nombre " + EncCompras.NomProveedor;
+                                        be.Fecha = DateTime.Now;
+                                        db.BitacoraErrores.Add(be);
+                                        db.SaveChanges();
+
+
+                                    }
+                                }
+                            }
+                            catch (WebException ex1)
+                            {
+                                string errorBody = "";
+                                if (ex1.Response != null)
+                                {
+                                    using (var reader = new StreamReader(ex1.Response.GetResponseStream()))
+                                    {
+                                        errorBody = reader.ReadToEnd();
+                                    }
+                                }
+
+                                BitacoraErrores be = new BitacoraErrores();
+                                be.Descripcion = "Cliente: " + EncCompras.NomProveedor + " " + ex1.Message + " | Respuesta: " + errorBody;
+                                be.StackTrace = "";
+                                be.Metodo = "Insercion de cliente #" + EncCompras.CodProveedor;
+                                be.Fecha = DateTime.Now;
+                                db.BitacoraErrores.Add(be);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex1)
+                            {
+                                BitacoraErrores be = new BitacoraErrores();
+                                be.Descripcion = "Cliente: " + EncCompras.NomProveedor + " " + ex1.Message;
+                                be.StackTrace = "";
+                                be.Metodo = "Insercion de cliente #" + EncCompras.CodProveedor;
+                                be.Fecha = DateTime.Now;
+                                db.BitacoraErrores.Add(be);
+                                db.SaveChanges();
 
                             }
 
