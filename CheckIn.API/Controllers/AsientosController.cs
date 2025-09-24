@@ -477,7 +477,11 @@ namespace CheckIn.API.Controllers
 
                             TipoGasto = db.Gastos.Where(a => a.Nombre.ToUpper().Contains("Alimentacion".ToUpper())).FirstOrDefault();
 
-
+							if(TipoGasto == null)
+							{
+								var idTipoGasto = item.idTipoGasto;
+								TipoGasto = db.Gastos.Where(a => a.idTipoGasto == idTipoGasto).FirstOrDefault();
+							}
 
                             var Cuenta = db.CuentasContables.Where(a => a.idCuentaContable == TipoGasto.idCuentaContable).FirstOrDefault();
                             var Norma = db.NormasReparto.Where(a => a.id == item.idNormaReparto).FirstOrDefault();
