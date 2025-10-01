@@ -588,6 +588,28 @@ namespace CheckIn.API.Controllers
                                 }
                             }
                         }
+                        catch (WebException ex1)
+                        {
+                            string errorBody = "";
+                            if (ex1.Response != null)
+                            {
+                                using (var reader = new StreamReader(ex1.Response.GetResponseStream()))
+                                {
+                                    errorBody = reader.ReadToEnd();
+                                }
+                            }
+
+                            BitacoraErrores be = new BitacoraErrores();
+                            be.Descripcion = "Factura : " + item.NumFactura + " | Respuesta: " + errorBody;
+                            be.StackTrace = "";
+
+                            be.Fecha = DateTime.Now;
+                            db.BitacoraErrores.Add(be);
+                            db.SaveChanges();
+                            contador++;
+                            Errores = Errores + " ******* " + be.Descripcion;
+
+                        }
                         catch (Exception ex)
                         {
                             BitacoraErrores be = new BitacoraErrores();
