@@ -109,3 +109,53 @@
    en System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 115
 ------------------------------------------
+02/02/2026 08:43 Clave o Usuario incorrectos =>    en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 100
+------------------------------------------
+02/02/2026 08:44 An error occurred while executing the command definition. See the inner exception for details. =>    en System.Data.Entity.Core.EntityClient.Internal.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+   en System.Data.Entity.Core.Objects.Internal.ObjectQueryExecutionPlan.Execute[TResultType](ObjectContext context, ObjectParameterCollection parameterValues)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__1()
+   en System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__0()
+   en System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0()
+   en System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   en System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<>c__14`1.<GetElementFunction>b__14_1(IEnumerable`1 sequence)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   en System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 115
+------------------------------------------
+02/02/2026 08:44 An error occurred while executing the command definition. See the inner exception for details. =>    en System.Data.Entity.Core.EntityClient.Internal.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+   en System.Data.Entity.Core.Objects.Internal.ObjectQueryExecutionPlan.Execute[TResultType](ObjectContext context, ObjectParameterCollection parameterValues)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__1()
+   en System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__0()
+   en System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0()
+   en System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   en System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<>c__14`1.<GetElementFunction>b__14_1(IEnumerable`1 sequence)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   en System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 115
+------------------------------------------
+02/02/2026 08:47 An error occurred while executing the command definition. See the inner exception for details. =>    en System.Data.Entity.Core.EntityClient.Internal.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+   en System.Data.Entity.Core.Objects.Internal.ObjectQueryExecutionPlan.Execute[TResultType](ObjectContext context, ObjectParameterCollection parameterValues)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__1()
+   en System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass41_0.<GetResults>b__0()
+   en System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   en System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__31_0()
+   en System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   en System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<>c__14`1.<GetElementFunction>b__14_1(IEnumerable`1 sequence)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   en System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   en System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   en CheckIn.API.Controllers.LoginController.<GetLoginAsync>d__4.MoveNext() en C:\Users\larce\Documents\GitHub\WAGestionGastosDYD\CheckIn.API\Controllers\LoginController.cs:línea 115
+------------------------------------------

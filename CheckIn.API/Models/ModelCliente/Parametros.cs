@@ -47,5 +47,6 @@ namespace CheckIn.API.Models.ModelCliente
         public bool es365 { get; set; }
         public int SerieCliente { get; set; }
         public int GrupoCliente { get; set; }
+        public string SQLValidacionProveedor { get; set; }
     }
 }

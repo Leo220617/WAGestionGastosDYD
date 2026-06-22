@@ -352,7 +352,7 @@ namespace CheckIn.API.Controllers
 
                         // Get the e-mails for a specific user.
                         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                        var messages = await _graphServiceClient.Users[item.RecepcionEmail].Messages.Request().Filter("isRead eq false").GetAsync();
+                        var messages = await _graphServiceClient.Users[item.RecepcionEmail].Messages.Request().Filter("isRead eq false").Top(10).GetAsync();
                         var messageIds = new List<String>();
                         foreach (var message in messages)
                         {
@@ -1232,11 +1232,12 @@ namespace CheckIn.API.Controllers
                         factura.Comentario = "";
                         try
                         {
-                            string SQL = " Select top 1 t0.LicTradNum , t0.cardcode,t0.CardName, ";
-                            SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
-                            SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
-                            SQL += " else Replace(LicTradNum, '-','') end = '" + factura.CodProveedor + "' ";
+                            //string SQL = " Select top 1 t0.LicTradNum , t0.cardcode,t0.CardName, ";
+                            //SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                            //SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                            //SQL += " else Replace(LicTradNum, '-','') end = '" + factura.CodProveedor + "' ";
 
+                            string SQL = db.Parametros.FirstOrDefault() != null ? (db.Parametros.FirstOrDefault().SQLValidacionProveedor + "'" + factura.CodProveedor + "'") : "";
                             Conexion g = new Conexion();
                             SqlConnection Cn = new SqlConnection(g.DevuelveCadena());
                             SqlCommand Cmd = new SqlCommand(SQL, Cn);
@@ -3628,10 +3629,13 @@ namespace CheckIn.API.Controllers
 
                     try
                     {
-                        string SQL = " Select top 1 t0.LicTradNum , t0.cardcode,t0.CardName, ";
-                        SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
-                        SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
-                        SQL += " else Replace(LicTradNum, '-','') end = '" + EncCompras.CodProveedor + "' ";
+                        //string SQL = " Select top 1 t0.LicTradNum , t0.cardcode,t0.CardName, ";
+                        //SQL += " case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                        //SQL += " else Replace(LicTradNum, '-','') end  Cedula from ocrd t0  where t0.CardType = 's' and case when LicTradNum Like '0%' then SUBSTRING( Replace(LicTradNum, '-',''),2,LEN(Replace(LicTradNum, '-','')) - 1)  ";
+                        //SQL += " else Replace(LicTradNum, '-','') end = '" + EncCompras.CodProveedor + "' ";
+
+
+                        string SQL = db.Parametros.FirstOrDefault() != null ? (db.Parametros.FirstOrDefault().SQLValidacionProveedor + "'" + EncCompras.CodProveedor + "'") : "";
 
                         Conexion g = new Conexion();
                         SqlConnection Cn = new SqlConnection(g.DevuelveCadena());
@@ -4418,6 +4422,54 @@ namespace CheckIn.API.Controllers
             }
         }
 
+
+        [HttpDelete]
+        [Route("api/Compras/Eliminar")]
+        public HttpResponseMessage Delete([FromUri] int id)
+        {
+            G.AbrirConexionAPP(out db);
+            var t = db.Database.BeginTransaction();
+            try
+            {
+
+                var Compra = db.EncCompras.Where(a => a.id == id).FirstOrDefault();
+
+                if (Compra != null)
+                {
+
+                    var DetCompra = db.DetCompras.Where(a => a.ClaveHacienda == Compra.ClaveHacienda && a.NumFactura == Compra.NumFactura && a.CodProveedor == Compra.CodProveedor).GroupBy(a => new { a.ClaveHacienda, a.NumFactura, a.CodProveedor })
+                    .Select(g => g.FirstOrDefault()).ToList();
+
+                    foreach(var item in DetCompra)
+                    {
+                        db.DetCompras.Remove(item);
+                        db.SaveChanges();
+                    }
+
+                    db.EncCompras.Remove(Compra);
+                    db.SaveChanges();
+                    t.Commit();
+                }
+                else
+                {
+                    throw new Exception("Compra no existe");
+                }
+                G.CerrarConexionAPP(db);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                BitacoraErrores be = new BitacoraErrores();
+                be.Descripcion = ex.Message;
+                be.StackTrace = ex.StackTrace;
+                be.Metodo = "Eliminar Compra";
+                be.Fecha = DateTime.Now;
+                db.BitacoraErrores.Add(be);
+                db.SaveChanges();
+                G.CerrarConexionAPP(db);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
 
         public int EncontrarGasto(ModelCliente db, string NomPro)
         {
